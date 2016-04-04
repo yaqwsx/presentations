@@ -3,7 +3,7 @@ title: SymDIVINE
 subtitle: Tool for Control-Explicit Data-Symbolic State Space Exploration
 titleshort: SymDIVINE
 author:
-    - Jan Mrázek
+    - "**Jan Mrázek**"
     - Petr Bauch
     - Henrich Lauko
     - Jiří Barnat
@@ -26,25 +26,24 @@ aspectratio: 169
 
 ## DIVINE
 
-- tool produced by ParaDiSe Laboratory
+- tool produced by the ParaDiSe Laboratory
 
-- explicit-state model checker with a focus on verification of real-world parallel C/C++ code
+- explicit-state model checker which focuses on real-world parallel C/C++ code
 
 - can verify:
 
-    - safety properties (memory safety, assertion safety)
+    - safety properties (memory safety, assertion safety, ...)
 
     - LTL properties
   
-- efficiently utilizes all available resources to speed up the verification
-  tasks
-  
+- efficient utilization of all available resources
+
 . . .
 
-- can be used as a runtime for unit tests of parallel code
+- unit tests verification of parallel code
     - complete standard C/C++ library
     
-    - detection of all race conditions
+    - detection of race conditions
     
     - memory safety with greater precision than Valgrind
 
@@ -52,9 +51,9 @@ aspectratio: 169
 
 ## Why "Another DIVINE"?
 
-DIVINE is an **explicit** model checker
+DIVINE is an **explicit-state** model checker
 
-- verified code cannot have non-deterministic input
+- non-deterministic input causes enormous state-space explosion $\rightarrow$ in practise no or bounded input
 
 - sufficient for unit tests of parallel programs
 
@@ -67,12 +66,14 @@ We would like to make it more powerful:
 - keep the ideology of DIVINE
     - real-world code verification with no manual modifications
     
-    - precise verification (bit-precise math operations, detection of all race conditions)
+    - precise verification (bit-precise math operations, detection of race conditions)
+    
+    - effect of compiler optimizations
 
 
-## Example
+## Motivation Example
 
-```C
+```CPP
 std::vector<int> data;
 for (size_t i = 0; i != 42; i++)
     data.push_back(24);
@@ -85,7 +86,7 @@ assert(data.size() == 41); // Safe
 
 Ideal situation:
 
-```C
+```CPP
 std::vector<int> data; size_t SIZE = nondet(); assume(SIZE > 0)
 for (size_t i = 0; i != SIZE; i++)
     data.push_back(nondet());
@@ -98,7 +99,7 @@ assert(data.size() == SIZE - 1);
 
 ## Short Overview
 
-- Control-Explicit Data-Symbolic model checker for parallel C/C++ programs
+- control-explicit data-symbolic model checker for parallel C/C++ programs
 
     - assertion safety
     
@@ -110,36 +111,72 @@ assert(data.size() == SIZE - 1);
 
 - prototype under development
 
-- can be downloaded at [https://github.com/yaqwsx/SymDivine](https://github.com/yaqwsx/SymDivine)
+- [https://github.com/yaqwsx/SymDivine](https://github.com/yaqwsx/SymDivine)
 
 ## Verification Workflow
 
-ToDo: Úžasný obrázek s Cčkovským kódem, clangem, llvmkem a SymDIVINEm. 
+\begin{latex}
+    \medskip
+    \footnotesize
+    \makebox[\textwidth][c]{
+    \begin{tikzpicture}[ ->, >=stealth', shorten >=1pt, auto, node distance=3cm
+                       , semithick
+                       , scale=0.7
+                       , state/.style={ rectangle, draw=black, very thick,
+                         minimum height=2em, minimum width = 4em, inner
+                         sep=2pt, text centered, node distance = 2em }
+                       ]
+
+      \node[state, anchor = north west] (cpp) {C/C++};
+      \node[state, right = 4em of cpp, rounded corners] (clang) {Clang};
+      \node[state, right = 4em of clang] (llvm) {LLVM IR};
+      \node[state, right = 4em of llvm, rounded corners] (divine) {SymDIVINE};
+
+      \node[state, above = of divine.north, minimum width = 15em] (ltl) {Verified property: reachability, LTL};
+      \node[state, right = of divine, anchor = west, minimum width = 8em] (valid) {\color{paradisegreen!70!black}OK};
+      \node[state, below = of valid, minimum width = 8em] (ce) {\color{red!70!black}Counterexample};
+
+      \path (ltl.south) edge (divine.north)
+            (cpp) edge (clang)
+            (clang) edge (llvm)
+            (llvm) edge (divine)
+            (divine) edge (valid) edge[out=0,in=180] (ce)
+            ;
+    \end{tikzpicture}
+    }
+\end{latex}
+
+```{.bash}
+echo clang -S $CFLAGS -emit-llvm -o model.ll model.c
+symdivine reachability model.ll
+symdivine ltl `cat property.ltl` model.ll
+```
 
 ## Control-Explicit Data-Symbolic approach
 
-Combination of ideas of symbolic execution and explicit model-checking.
+- ideas from symbolic execution and explicit-state model-checking
 
-Main idea: keep control flow explicit, treat data symbolically when exploring the state space.
+. . .
 
-- state-space of verified program consists of multi-states
+Main idea: control flow explicit, data symbolic
 
-- each multi-state represents a single control flow location and a set
-  of possible data valuations
+- multi-state: single control flow location and a set of possible data valuations
   
     - one multi-state represents multiple explicit states (set-based reduction)
-  
-- set of data valuations can be represented by:
     
-    - BDDs
+    - multiple multi-states per single control flow location
+  
+- set of data valuations represented by:
+    
+    - BDDs (does not work well in practise)
     
     - SMT formulae
 
-- **it is possible to decide whether two states represent the same
-  data valuation**
-  
-- these properties of multi-states allows us to reuse existing algorithms
-  from explicit model checking
+- **decision procedure for data valuations equality** (quantified SMT query)
+
+. . .
+
+Multi-state equality allows us to reuse algorithms from explicit-state model checking
 
 ## Set-based Reduction
 
@@ -159,11 +196,9 @@ Main idea: keep control flow explicit, treat data symbolically when exploring th
     
 ## Set-based Reduction
 
-DIVINE
-
 \begin{latex}
 \begin{center}
-\resizebox{0.7 \textwidth}{!}{
+\resizebox{0.95 \textwidth}{!}{
 \begin{tikzpicture}[]
     \tikzstyle{every node}=[align=center, minimum width=1.75cm, minimum height=0.6cm]
     \tikzset{empty/.style = {minimum width=0cm,minimum height=1cm}}
@@ -175,25 +210,26 @@ DIVINE
     \tikzstyle{wave}=[decorate, decoration={snake, post length=0.1 cm}]
     %divine
     \node [tnode] (s) {\texttt{init}};
+    \node [above = 0.2cm  of s] (lab) {DIVINE};
     \node [right = 2cm of s] (mid) {};
     
-    \node [tnode, above = -0.25 cm of mid, minimum width=2cm] (s65534){\texttt{a = 65534}};
-    \node [tnode, below = -0.25 cm of mid, minimum width=2cm] (s65535){\texttt{a = 65535}};
+    \node [tnode, above = -0.25 cm of mid, minimum width=2.2cm] (s65534){\texttt{a = 65534}};
+    \node [tnode, below = -0.25 cm of mid, minimum width=2.2cm] (s65535){\texttt{a = 65535}};
     
     \node [dots, above = 0 cm of s65534] (dots1){\LARGE$\vdots$};
     \node [dots, below = -0.2 cm of s65535] (dots2){\LARGE$\vdots$};
     
-    \node [tnode, above = -0.2 cm of dots1, minimum width=2cm] (s0) {\texttt{a = 0}};
-    \node [tnode, below = 0 cm of dots2, minimum width=2cm] (sn) {\texttt{a = 2\textasciicircum32}};
+    \node [tnode, above = -0.2 cm of dots1, minimum width=2.2cm] (s0) {\texttt{a = 0}};
+    \node [tnode, below = 0 cm of dots2, minimum width=2.2cm] (sn) {\texttt{a = $2^{32}-1$}};
     
-    \node [tnode, right = 1.5 cm of s65534, minimum width=3cm] (s65534_icmp){\texttt{a = 65534; b = 0}};
-    \node [tnode, right = 1.5 cm of s65535, minimum width=3cm] (s65535_icmp){\texttt{a = 65535; b = 1}};
+    \node [tnode, right = 1.5 cm of s65534, minimum width=4.2cm] (s65534_icmp){\texttt{a = 65534; b = 0}};
+    \node [tnode, right = 1.5 cm of s65535, minimum width=4.2cm] (s65535_icmp){\texttt{a = 65535; b = 1}};
     
     \node [dots, above = 0.0 cm of s65534_icmp] (dots1_icmp){\LARGE$\vdots$};
     \node [dots, below = -0.2 cm of s65535_icmp] (dots2_icmp){\LARGE$\vdots$};
     
-    \node [tnode, right = 1.5 cm of s0, minimum width=3cm] (s0_icmp) {\texttt{a = 0; b = 0}};
-    \node [tnode, right = 1.5 cm of sn, minimum width=3cm] (sn_icmp) {\texttt{a = 2\textasciicircum32; b = 1}};
+    \node [tnode, right = 1.5 cm of s0, minimum width=4.2cm] (s0_icmp) {\texttt{a = 0; b = 0}};
+    \node [tnode, right = 1.5 cm of sn, minimum width=4.2cm] (sn_icmp) {\texttt{a = $2^{32}-1$; b = 1}};
         
     \node [empty, left  = 1 cm of s]  (start) {};
     \node [empty, right = 1 cm of s0_icmp] (s0end) {};
@@ -226,11 +262,9 @@ DIVINE
 \end{center}
 \end{latex}
 
-SymDIVINE
-
 \begin{latex}
 \begin{center}
-    \resizebox{0.7\textwidth}{!}{
+    \resizebox{0.95\textwidth}{!}{
     \begin{tikzpicture}[]
       \tikzstyle{every node}=[align=center, minimum width=1.75cm, minimum height=0.6cm]
       \tikzset{empty/.style = {minimum width=0cm,minimum height=1cm}}
@@ -242,12 +276,13 @@ SymDIVINE
       \tikzstyle{wave}=[decorate, decoration={snake, post length=0.1 cm}]  
       %symdivine
       \node [tnode] (s_sym) {\texttt{init}};
-      \node [tnode, right = 1.2 cm of s_sym, minimum width=2cm] (s_nd_sym) {\texttt{a = \{0,\dots,2\textasciicircum32\}}};
+      \node [above = 0.2cm  of s_sym] (lab_sym) {SymDIVINE};
+      \node [tnode, right = 1.2 cm of s_sym, minimum width=2cm] (s_nd_sym) {\texttt{a = \{0,\dots,$2^{32}-1$\}}};
       
-      \node [empty, right = 3cm of s_nd_sym] (mid_sym) {};
+      \node [empty, right = 3.5cm of s_nd_sym] (mid_sym) {};
        
-      \node [tnode, above = -0.45 cm of mid_sym, minimum width=3.7cm] (s1_sym) { \texttt{a = \{0,\dots,65534\}}\\\texttt{b = \{0\}}};
-      \node [tnode, below = -0.45 cm of mid_sym, minimum width=3.7cm] (s2_sym){\texttt{a = \{65535,\dots,2\textasciicircum32\}}\\\texttt{b = \{1\}}};
+      \node [tnode, above = -0.45 cm of mid_sym, minimum width=4.6cm] (s1_sym) { \texttt{a = \{0,\dots,65534\}}\\\texttt{b = \{0\}}};
+      \node [tnode, below = -0.45 cm of mid_sym, minimum width=4.6cm] (s2_sym) { \texttt{a = \{65535,\dots,$2^{32}-1$\}}\\\texttt{b = \{1\}}};
             
       \node [empty, left  = 0.75 cm of s_sym]  (start_sym) {};
       \node [empty, right = 0.75 cm of s1_sym] (s1end_sym) {};
@@ -271,15 +306,19 @@ SymDIVINE
 \end{center}
 \end{latex}
 
+## State Equality
+
+ToDo
+
 ## Input Language Overview
 
 SymDIVINE supports LLVM as an input formalism
 
-- in theory any programming language with LLVM frontend is supported
+- in theory supports any programming language with LLVM frontend
 
     - tested only with C and C++
 
-- subset of pthread library (threads, mutexes) is supported
+- subset of pthread library (threads, mutexes)
 
 - SV-COMP notation adopted
 
@@ -291,33 +330,61 @@ SymDIVINE supports LLVM as an input formalism
 
 ## Input Language Restriction
 
-- SymDIVINE supports almost all LLVM instructions except:
-    - floating point instructions
+SymDIVINE cannot handle input code with:
+
+- heap allocation (malloc, operator new)
+
+- pointer casts
+
+- symbolic pointers
+
+- exceptions
+
+- floating point arithmetics
+
+## Property Verification
+
+Assertion safety
+
+- reachability of error states (assertion does not hold)
+
+- exhaustive enumeration of multi-state space
+    - the same states are merged (may become costly in theory)
     
-    - bitcast instructions
+    - all thread interleavings ($\tau$-reduction incorporated)
     
-    - exceptions
+. . .
+
+LTL
+
+- standard automata-based algorithm (iterative Nested DFS)
+
+- atomic propositions
+    - can refer to any global variable
     
-- SymDIVINE does not support:
-    - heap allocation (malloc, operator new)
-    
-    - symbolic pointers
+    - can contain arithmetic operations, relations operators (eg. $x+y > 5$)
 
-# Demonstration
+## State Equality -- Is It Worth It?
 
-## Example of Usage -- Assertion Reachability
+Disadvantages (compared to symbolic execution):
 
-- benchmark \texttt{stateful01\_true-unreach-call}
+- expensive operation
 
-- call \texttt{./symdivine reachability stateful01\_true-unreach-call.ll}
+- almost no benefits for single-threaded programs with finite behavior
 
-## Example of Usage -- LTL
+. . .
 
-- benchmark \texttt{acqrel}
+Advantages (compared to symbolic execution):
 
-- property $\mathcal{G}(A\Rightarrow\mathcal{F}R)$ (property can refer to any global variable)
+- easy adaptation of classic model checking algorithms (LTL)
 
- - call \texttt{./symdivine ltl "G([seg1\_off1 != 0(32)] => F [seg1\_off0 != 0(32)])" acqrel.ll}
+- each state is visited only once -- up to 98 % reduction compared to exploration without merging 
+
+- can verify programs with infinite behavior
+
+. . .
+
+In practise only small number of multi-states per control-flow location ($<20$), so advantages outweight disadvantages
  
 # Benchmarks & Results
 
@@ -334,38 +401,38 @@ C benchmarks by Byron Cook
 
 \begin{table}[]
 \centering
-\begin{tabular}{cc|c|c|c|c|}
-\cline{3-6}
-                                                 &                                       & \multicolumn{2}{c|}{Iterative deepening DFS}  & \multicolumn{2}{c|}{Simple DFS} \\ \cline{3-6} 
-                                                 &                                       & -O0                   & -O2                   & -O0            & -O2            \\ \hline\hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{acqrel}}    & $\LTLg(a\Rightarrow\LTLf b)$          & $>120 s$              & $>120 s$              & $>120 s$       & $>120 s$       \\ \cline{2-6} 
-\multicolumn{1}{|c|}{}                           & $\neg\LTLg(a\Rightarrow\LTLf b)$      & $8.79 s$              & $0.57 s$              & $>120 s$       & $0.55 s$       \\ \hline\hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{apache}}    & $\LTLg(a\Rightarrow\LTLg\LTLf b)$     & $>120 s$              & $13.39 s$             & $>120 s$       & $97.92 s$      \\ \cline{2-6} 
-\multicolumn{1}{|c|}{}                           & $\neg\LTLg(a\Rightarrow\LTLg\LTLf b)$ & $>120 s$              & $12.60 s$             & $>120 s$       & $>120 s$       \\ \hline\hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{pgarch}}    & $\LTLg\LTLf a$                        & $12.69 s$             & $6.33 s$              & $>120 s$       & $6.43 s$       \\ \cline{2-6} 
-\multicolumn{1}{|c|}{}                           & $\neg\LTLg\LTLf a$                    & $3.76 s$              & $1.19 s$              & $5.81 s$       & $1.13 s$       \\ \hline\hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{win1}}      & $\LTLg(a\Rightarrow\LTLf a)$          & $>120 s$              & $>120 s$              & $>120 s$       & $>120 s$       \\ \cline{2-6} 
-\multicolumn{1}{|c|}{}                           & $\neg\LTLg(a\Rightarrow\LTLf a)$      & $6.29 s$              & $0.71 s$              & $>120 s$       & $0.68 s$       \\ \hline\hline
-\multicolumn{1}{|c|}{\multirow{2}{*}{win3}}      & $\LTLf\LTLg a$                        & $1.58 s$              & $1.26 s$              & $1.39 s$       & $1.00 s$       \\ \cline{2-6} 
-\multicolumn{1}{|c|}{}                           & $\neg\LTLf\LTLg a$                    & $2.16 s$              & $2.13 s$              & $2.39 s$       & $1.68 s$       \\ \hline
+\begin{tabular}{cc|c|c|}
+\cline{3-4}
+                                              &                                       & -O0                   & -O2                  \\ \hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{acqrel}} & $\LTLg(a\Rightarrow\LTLf b)$          & $>120 s$              & $>120 s$             \\ \cline{2-4} 
+\multicolumn{1}{|c|}{}                        & $\neg\LTLg(a\Rightarrow\LTLf b)$      & $8.79 s$              & $0.57 s$             \\ \hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{apache}} & $\LTLg(a\Rightarrow\LTLg\LTLf b)$     & $>120 s$              & $13.39 s$            \\ \cline{2-4} 
+\multicolumn{1}{|c|}{}                        & $\neg\LTLg(a\Rightarrow\LTLg\LTLf b)$ & $>120 s$              & $12.60 s$            \\ \hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{pgarch}} & $\LTLg\LTLf a$                        & $12.69 s$             & $6.33 s$             \\ \cline{2-4} 
+\multicolumn{1}{|c|}{}                        & $\neg\LTLg\LTLf a$                    & $3.76 s$              & $1.19 s$             \\ \hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{win1}}   & $\LTLg(a\Rightarrow\LTLf a)$          & $>120 s$              & $>120 s$             \\ \cline{2-4} 
+\multicolumn{1}{|c|}{}                        & $\neg\LTLg(a\Rightarrow\LTLf a)$      & $6.29 s$              & $0.71 s$             \\ \hline
+\multicolumn{1}{|c|}{\multirow{2}{*}{win3}}   & $\LTLf\LTLg a$                        & $1.58 s$              & $1.26 s$             \\ \cline{2-4} 
+\multicolumn{1}{|c|}{}                        & $\neg\LTLf\LTLg a$                    & $2.16 s$              & $2.13 s$             \\ \cline{2-4} \hline
 \end{tabular}
 \end{table}
 
+. . .
+
+DIVINE can verify only win3 benchmark (with nearly the same time), others cause timeout or memory overflow.
 
 ## SV-COMP Results
 
-- SV-COMP 2016 score: -136
+- SV-COMP 2016 score: $-136$
 
 - later after small bugfixes we achieved score up to 400 
-    - false results caused by inling of `__VERIFIER_atomic_*` functions
+    - wrong results caused by inling of `__VERIFIER_atomic_*` functions
     
-    - absence of atomic sections caused state-space explosion and we usually run out of memory
+    - absence of atomic sections caused state-space explosion
 
 . . .
 
 - both our tools were submited for SV-COMP
-
-- expectations: SymDIVINE beats DIVINE -- DIVINE cannot handle non-deterministic input well
 
 . . .
 
@@ -373,94 +440,64 @@ C benchmarks by Byron Cook
 
 ## SV-COMP: DIVINE vs. SymDIVINE
 
-Why did DIVINE beat SymDIVINE at SV-COMP?
-
-. . .
 
 SV-COMP Concurrency benchamarks contain a little or none non-determinism
 
-- DIVINE is up to 500× faster than SymDIVINE on benchmarks with no non-determinism
-  (no multistates are used when no non-determinism is present)
+- DIVINE up to 500× faster than SymDIVINE on benchmarks with no non-determinism
+  (no non-determinism $\rightarrow$ no multi-states nor SMT solver calls)
 
-- models with single (or more) 32bit input values cannot be verified by DIVINE, SymDIVINE
-  handles them well
-
-## State Equality -- Is It Worth It?
-
-Disadvantages:
-
-- one of the most expensive operations
-
-- bigger the state space, the more costly the equality is
-
-- almost no benefits for single-threaded programs
-
+- models with integral input values
+    - cannot be verified by DIVINE in reasonable time and memory
+    
+    - can be easily verified by SymDIVINE
+  
 . . .
 
-Advantages:
-
-- easy adaptation of classic model checking algorithms (LTL BA model checking)
-
-- huge state space reduction for parallel programs (up to 95 %)
-
-- can verify programs with infinite behavior unlike symbolic execution
+SV-COMP benchmarks exploits mainly technical imperfections of SymDIVINE, not its approach
 
 # Conclusion
 
 ## Advantages of SymDIVINE
 
-Compared to explicit model checkers:
+Compared to explicit-state model checkers:
 
 - non-deterministic input can be handled
-
-. . .
-
-Compared to classic symbolic model checkers:
-
-- real world code verification with no need for modelling
 
 . . .
 
 Compared to symbolic execution:
 
 - can verify programs with infinite behavior
+- more efficient on parallel programs
 
 . . .
 
 Other verification tools for C/C++ code:
-
-- bitprecise verification
-
-    - other tools often use integral instead of bitvector representation
     
-- atomicity level on LLVM instructions (`i++` on shared variable is not atomic)
+- atomicity level on LLVM instructions (closely matches real-world architectures)
 
 - in theory no false positives nor false negatives
 
 ## Disadvantages of SymDIVINE
 
-- it is a prototype tool for proof-of-concept:
-    - no support for LLVM debug information: counterexamples and properties are
-      referred to LLVM code and internal representation of the multistates
+- a prototype tool for proof-of-concept:
+    - no support for LLVM debug information: counterexamples and properties
+      refer to LLVM code and internal representation of the multistates
     
     - no advanced optimizations (strong $\tau$-reduction, memory compression etc.)
 
 - no support for symbolic pointer arithmetics and dynamic memory (yet)
 
-- some loops that depend on an input value may need unrolling
-
-- possible state space explosion
+- some loops that depend on an input value may need unrolling $\rightarrow$ possible state space explosion
 
 ## Conclusion & Future work
 
-- SymDIVINE's approach to verification of program with input was proofed to be
-  working quite well, however it lacks strong background for:
+SymDIVINE's approach to verification of program with input was proofed to 
+work quite well, however it lacks strong background for:
 
-    - full LLVM support & its efficient execution
-    
-    - dynamic memory
-    
-    - counterexamples refering to source code
+- full LLVM support & its efficient execution
+
+- counterexamples refering to source code
 
 . . .
 
@@ -478,4 +515,4 @@ SymDIVINE can be downloaded at [https://github.com/yaqwsx/SymDivine](https://git
 
 . . .
 
-Thank you
+\hfill Thank you

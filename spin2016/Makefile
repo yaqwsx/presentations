@@ -4,7 +4,7 @@ PWD=$(shell pwd)
 
 all : mds
 
-.PRECIOUS: %.pdf
+.PRECIOUS: %.pdf %.tex
 
 mds :	$(ALL_MD:.md=.pdf)
 
