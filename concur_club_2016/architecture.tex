@@ -1,0 +1,50 @@
+\begin{figure}[!ht]
+\begin{center}
+\resizebox{\textwidth}{!}{
+    \begin{tikzpicture}[ ->, >=stealth', shorten >=1pt, auto, node distance=3cm
+                       , semithick
+                       , scale=0.7
+                       , state/.style={ rectangle, draw=black, very thick,
+                         minimum height=2em, minimum width = 4em, inner
+                         sep=4pt, text centered, node distance = 2em }
+                       , font=\sffamily
+                       ]
+
+      \node[state, minimum width = 8em] (inter) {LLVM Interpreter};
+
+      \node[above = 3em of inter] (alg_cent) {};
+      \node[state, left = 0.5em of alg_cent, minimum width = 6em] (ltl) {LTL};
+      \node[state, right = 0.5em of alg_cent, minimum width = 6em] (reach) 
+      {reachability};
+      \node[above = 0.7em of alg_cent] (alg_label) {Algorithms};
+      \node[state, left = 4em of ltl] (property) {LTL formula};
+
+      \node[below = 3em of inter] (data_label) {Data Stores};
+      \node[below = 0.7em of data_label] (data_cent) {};
+      \node[state, left = 0.5em of data_cent, minimum width = 7em] (expl) 
+      {Explicit Store};
+      \node[state, right = 0.5em of data_cent, minimum width = 7em] (symb) {SMT
+       Store};
+
+       \node[state, right = 3em of symb] (solver) {SMT solver};
+
+      \node[state, left = 6em of inter] (input) {LLVM bit-code};
+      \node[state, fit=(ltl) (reach) (alg_label)] 
+      (algorithm) {};
+      \node[state, fit=(data_label) (expl) (symb)] (state) 
+      {};
+
+      \node[state, dotted, label=\symdivine, fit = (algorithm) (state)] (frame) 
+      {};
+
+      \path[<->] (inter) edge (algorithm)
+                 (inter) edge (state)
+                 (symb) edge (solver)
+                 ;
+      \path[->] (input) edge (inter)
+                (property) edge (ltl)
+                ;
+    \end{tikzpicture}
+    }
+\end{center}
+\end{figure}

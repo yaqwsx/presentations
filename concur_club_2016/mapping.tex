@@ -1,0 +1,73 @@
+\begin{figure}[!ht]
+\begin{center}
+\resizebox{0.8\textwidth}{!}{
+    \begin{tikzpicture}[ ->, >=stealth', shorten >=1pt, auto, node distance=1.5cm
+                       , semithick
+                       , scale=0.7
+                       , font=\sffamily
+                       , seg/.style = {
+                            rectangle,
+                            draw,
+                            minimum width = 3em,
+                            minimum height = 2em,
+                            fill=gray!60!white},
+                       , gen/.style = {
+                            rectangle,
+                            draw,
+                            minimum width = 2em,
+                            minimum height = 2em},
+                       , thread/.style = {
+                            rectangle,
+                            draw,
+                            minimum width = 5em,
+                            minimum height = 1.2em},
+                       ]
+
+    \node[seg, fill=white] (seg0) {segments};
+    \foreach \x [evaluate=\x as \prev using \x-1] in {1,...,8}  {
+        \node[seg, right = 0pt of seg\prev] (seg\x) {\x};
+    }
+
+    \pgfmathsetseed{1138}
+
+    \foreach \x in {1,...,8} {
+        \pgfmathsetmacro{\vars}{int(random(5))}
+
+        \pgfmathsetmacro{\geni}{int(random(0,4))}
+        \node[gen, below = 1em of seg\x] (gen\x 1) {g\geni};
+        \path[->] (seg\x) edge (gen\x 1);
+        \foreach \prev [evaluate=\prev as \y using int(\prev+1)] in {1,...,\vars} {
+            \pgfmathsetmacro{\gen}{int(random(0,4))}
+            \node[gen, below = 0 cm of gen\x\prev] (gen\x\y) {g\gen};
+        }        
+    }
+
+    \node[thread, fill=gray!60!white, above = 9 em of seg1] (t10) {Thread 1};
+    \node[thread, below = 0pt of t10] (t11) {foo1};
+    \node[thread, below = 0pt of t11] (t12) {foo2};
+
+    \node[thread, fill=gray!60!white, above = 9 em of seg4] (t20) {Thread 2};
+    \node[thread, below = 0pt of t20] (t21) {foo2};
+    \node[thread, below = 0pt of t21] (t22) {foo2};
+    \node[thread, below = 0pt of t22] (t23) {foo3};
+    \node[thread, below = 0pt of t23] (t24) {foo2};
+
+    \node[thread, fill=gray!60!white, above = 9 em of seg7] (t30) {Thread 3};
+    \node[thread, below = 0pt of t30] (t31) {foo3};
+    \node[thread, below = 0pt of t31] (t32) {foo4};
+
+    \path[->]
+        (t12.south) edge [in = 90, out = 270] (seg4.north)
+        (t11.west) edge [in = 90, out = 180] (seg1.north)
+        (t21.west) edge [in = 90, out = 180] (seg2.north)
+        (t22.west) edge [in = 90, out = 180] (seg3.north)
+        (t23.east) edge [in = 90, out = 0] (seg6.north)
+        (t24.east) edge [in = 90, out = 0] (seg7.north)
+        (t31.west) edge [in = 90, out = 180] (seg5.north)
+        (t32.south) edge [in = 90, out = 270] (seg8.north)
+        ;
+
+    \end{tikzpicture}
+    }
+\end{center}
+\end{figure}

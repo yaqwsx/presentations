@@ -1,0 +1,105 @@
+\begin{center}
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[]
+    \tikzstyle{every node}=[align=center, minimum width=1.75cm, minimum height=0.6cm]
+    \tikzset{empty/.style = {minimum width=0cm,minimum height=1cm}}
+    \tikzset{tnode/.style = {rectangle,draw=black!50,fill=black!10,thick}}
+    \tikzset{dots/.style = {draw=none}}
+    \tikzset{>=latex}
+    \tikzstyle{outer}=[draw, dotted, thick]
+    
+    \tikzstyle{wave}=[decorate, decoration={snake, post length=0.1 cm}]
+    %divine
+    \node [tnode] (s) {\texttt{init}};
+    \node [above = 0.2cm  of s] (lab) {DIVINE};
+    \node [right = 2cm of s] (mid) {};
+    
+    \node [tnode, above = -0.25 cm of mid, minimum width=2.2cm] (s65534){\texttt{a = 65534}};
+    \node [tnode, below = -0.25 cm of mid, minimum width=2.2cm] (s65535){\texttt{a = 65535}};
+    
+    \node [dots, above = 0 cm of s65534] (dots1){\LARGE$\vdots$};
+    \node [dots, below = -0.2 cm of s65535] (dots2){\LARGE$\vdots$};
+    
+    \node [tnode, above = -0.2 cm of dots1, minimum width=2.2cm] (s0) {\texttt{a = 0}};
+    \node [tnode, below = 0 cm of dots2, minimum width=2.2cm] (sn) {\texttt{a = $2^{32}-1$}};
+    
+    \node [tnode, right = 1.5 cm of s65534, minimum width=4.2cm] (s65534_icmp){\texttt{a = 65534; b = 0}};
+    \node [tnode, right = 1.5 cm of s65535, minimum width=4.2cm] (s65535_icmp){\texttt{a = 65535; b = 1}};
+    
+    \node [dots, above = 0.0 cm of s65534_icmp] (dots1_icmp){\LARGE$\vdots$};
+    \node [dots, below = -0.2 cm of s65535_icmp] (dots2_icmp){\LARGE$\vdots$};
+    
+    \node [tnode, right = 1.5 cm of s0, minimum width=4.2cm] (s0_icmp) {\texttt{a = 0; b = 0}};
+    \node [tnode, right = 1.5 cm of sn, minimum width=4.2cm] (sn_icmp) {\texttt{a = $2^{32}-1$; b = 1}};
+        
+    \node [empty, left  = 1 cm of s]  (start) {};
+    \node [empty, right = 1 cm of s0_icmp] (s0end) {};
+    \node [empty, right = 1 cm of s65534_icmp] (s65534end) {};
+    \node [empty, right = 1 cm of s65535_icmp] (s65535end) {};
+    \node [empty, right = 1 cm of sn_icmp] (snend) {};
+    
+    \begin{pgfonlayer}{background}[]
+    \node[outer, fit = (s) (s0) (sn) (start) (s0end) (snend) (s0_icmp)] (tool) {};
+    \end{pgfonlayer}
+
+    \draw [->] (s.east) -| ($(s.east) !0.3! (s0.west)$) |- (s0.west) node [near end, above=1pt] {\texttt{call}} ;
+    \draw [->] (s.east) -| ($(s.east) !0.3! (s65534.west)$) |- (s65534.west) node [near end, above=1pt] {\texttt{call}} ;;
+    \draw [->] (s.east) -| ($(s.east) !0.3! (s65535.west)$) |- (s65535.west) node [near end, above=1pt] {\texttt{call}} ;
+    \draw [->] (s.east) -| ($(s.east) !0.3! (sn.west)$) |- (sn.west) node [near end, above=1pt] {\texttt{call}} ;
+    
+    \draw [->] (s0) -- (s0_icmp) node [midway, above=0pt] {\texttt{icmp}};
+    \draw [->] (s65534) -- (s65534_icmp) node [midway, above=0pt] {\texttt{icmp}};
+    \draw [->] (s65535) -- (s65535_icmp) node [midway, above=0pt] {\texttt{icmp}};
+    \draw [->] (sn) -- (sn_icmp) node [midway, above=0pt] {\texttt{icmp}};
+    
+    \draw [wave, ->] (s0_icmp.east) -- (s0end) node [empty, midway, above=2pt] {};
+    \draw [wave, ->] (s65534_icmp.east) -- (s65534end) node [empty, midway, above=2pt] {};
+    \draw [wave, ->] (s65535_icmp.east) -- (s65535end) node [empty, midway, above=2pt] {};
+    \draw [wave, ->] (sn_icmp.east) -- (snend) node [empty, midway, above=2pt] {};
+    
+    \draw [wave, ->] (start) -- (s);
+\end{tikzpicture}
+}
+\end{center}
+
+\begin{center}
+    \resizebox{\textwidth}{!}{
+    \begin{tikzpicture}[]
+      \tikzstyle{every node}=[align=center, minimum width=1.75cm, minimum height=0.6cm]
+      \tikzset{empty/.style = {minimum width=0cm,minimum height=1cm}}
+      \tikzset{tnode/.style = {rectangle,draw=black!50,fill=black!10,thick,align=left}}
+      \tikzset{dots/.style = {draw=none}}
+      \tikzset{>=latex}
+      \tikzstyle{outer}=[draw, dotted, thick]
+      
+      \tikzstyle{wave}=[decorate, decoration={snake, post length=0.1 cm}]  
+      %symdivine
+      \node [tnode] (s_sym) {\texttt{init}};
+      \node [above = 0.2cm  of s_sym] (lab_sym) {SymDIVINE};
+      \node [tnode, right = 1.2 cm of s_sym, minimum width=2cm] (s_nd_sym) {\texttt{a = \{0,\dots,$2^{32}-1$\}}};
+      
+      \node [empty, right = 3.5cm of s_nd_sym] (mid_sym) {};
+       
+      \node [tnode, above = -0.45 cm of mid_sym, minimum width=4.6cm] (s1_sym) { \texttt{a = \{0,\dots,65534\}}\\\texttt{b = \{0\}}};
+      \node [tnode, below = -0.45 cm of mid_sym, minimum width=4.6cm] (s2_sym) { \texttt{a = \{65535,\dots,$2^{32}-1$\}}\\\texttt{b = \{1\}}};
+            
+      \node [empty, left  = 0.75 cm of s_sym]  (start_sym) {};
+      \node [empty, right = 0.75 cm of s1_sym] (s1end_sym) {};
+      \node [empty, right = 0.75 cm of s2_sym] (s2end_sym) {};
+      
+      \begin{pgfonlayer}{background}[]
+        \node[outer, fit = (s_sym) (s1_sym) (s2_sym) (start_sym) (s1end_sym) (s2end_sym)] (tool) {};
+      \end{pgfonlayer}
+      
+      \draw [->] (s_sym.east) -- (s_nd_sym.west) node [midway, above=0pt] {\texttt{call}};
+      
+      \draw [->] (s_nd_sym.east) -| ($(s_nd_sym.east) !0.2! (s1_sym.west)$) |- (s1_sym.west) node [near end, above=0pt] {\texttt{icmp}};
+      \draw [->] (s_nd_sym.east) -| ($(s_nd_sym.east) !0.2! (s2_sym.west)$) |- (s2_sym.west) node [near end, above=0pt] {\texttt{icmp}};
+      
+      \draw [wave, ->] (start_sym) -- (s_sym);
+      \draw [wave, ->] (s1_sym) -- (s1end_sym);
+      \draw [wave, ->] (s2_sym) -- (s2end_sym);
+      
+    \end{tikzpicture}
+    }
+\end{center}

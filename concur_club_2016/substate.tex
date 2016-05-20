@@ -1,0 +1,36 @@
+\begin{figure}[!ht]
+\begin{center}
+\resizebox{0.8\textwidth}{!}{
+    \begin{tikzpicture}[ ->, >=stealth', shorten >=1pt, auto, node distance=1.5cm
+                       , semithick
+                       , scale=0.7
+                       , font=\sffamily
+                       , stateprog/.style={ rectangle, draw=black, very thick,
+                         minimum height=2em, minimum width = 10em, inner
+                         sep=6pt, text centered, node distance = 2em, align = left,  rounded corners }
+                       ]
+
+        \node[stateprog, label=Original multi-state] (p1)
+            {Program counter: x \\
+             Path condition clauses: \\
+             $a < 42$ \\
+             $a > 0 $ \\
+             $b = a + 4$ \\
+             $c > 42$
+             };
+
+        \node[text centered, align = left, above right = -3.1em and 6em of p1] (pc)
+            {Program counter: x  \\
+             Substates: };
+        \node[stateprog, below = 0.5em of pc] (p2)
+            {$a < 42$ \\
+             $a > 0 $ \\
+             $b = a + 4$};
+        \node[stateprog, below = 0.5em of p2] (p3)
+            {$c > 42$};
+
+        \node[stateprog, fit = (pc) (p2) (p3), label=New multi-state] {};
+    \end{tikzpicture}
+    }
+\end{center}
+\end{figure}
