@@ -19,40 +19,11 @@ date: 15th June 2016
 aspectratio: 43
 ...
 
-# Explicit vs. Semi-Symbolic Verification Approach
-
-## Explicit-State Model Checking
-
-Verification approach which:
-
-- exhaustively enumerate all possible memory configurations of verified program
-
-- explores all possibilities when non-determinism occurs
-
-    - great for handling scheduler
-
-    - poor performance for data, in some cases impossible
-
-- is implemented in DIVINE
-
-## Control-Explicit Data-Symbolic Model Checking
-
-Verification approach which:
-
-- enumerate all possible **control-flow** locations with sets of corresponding
-  memory configurations
-
-- handle scheduler non-determinism in explicit manner
-
-- handle data non-determinism by set-based reduction
-
-- is implemented in SymDIVINE
-
-## Set-Based Reduction
+## Explicit vs. Control-Explicit Data-Symbolic Approach
 
 ```{.C .numberLines}
 unsigned a = input();
-if (a < 42) {
+if (a >= 42) {
     ...
 }
 else {
@@ -60,50 +31,34 @@ else {
 }
 ```
 
-## Set-Based Reduction
+## Explicit vs. Control-Explicit Data-Symbolic Approach
 
 \input{state_space.tex}
 
-## Control-Explicit Data-Symbolic Approach Summary
-
-- verification of programs with non-deterministic input values
-
-- challenge: representation of memory configurations
-
-. . .
-
-- requirements for the representation:
-
-    - reasonably small
-    - fast
-    - easy transformation
-    - equality and emptiness check
-
-# SymDIVINE
+Challenge: representation of memory configurations
 
 ## SymDIVINE
 
 - verification tool for C and C++ multi-threaded programs with input values
 
-- prototype of Control-Explicit Data-Symbolic approach
+- prototype of the Control-Explicit Data-Symbolic approach
 
 - no common code with DIVINE (yet), shares the same ideology
 
-- memory configurations represented via first-order logic formulae over
-  bitvectors
+- memory configurations represented via logic formulae
 
 ## Set Representation
 
-First-order logic formula $\varphi$ represents a set of memory configurations
+Logic formula $\varphi$ represents a set of memory configurations
 
 - formula variables map to program variables
 
-- model of $\varphi$ = memory configuration
+- valid valuation of $\varphi$  variables = memory configuration
 
 . . .
 
-Example:  $b = a + 5 \wedge b < 42 \wedge a > 2$ corresponds to a set of tuples
-of $a$ and $b$: $\{(x, x + 5) \mid x \in \{2, \cdots, 37\}\}$
+Example:  $b = a + 5 \wedge b < 42 \wedge a > 2$ corresponds to a set of memory
+configurations: $\{(2, 7), (3, 8),\cdots,(37,42)\}$
 
 . . .
 
@@ -111,17 +66,15 @@ Advantages:
 
 - can represent non-trivial configurations
 
-- easy transformation (syntactic manipulation)
+- easy transformations (syntactic manipulation)
 
 ## Set Representation
 
 Emptiness test:
 
-- decide if $\varphi$ is satisfiable
+- decide if $\varphi$ is satisfiable (using SMT solver)
 
-- SMT solver is used
-
-- fairly cheap (10 % of verification time)
+- fairly cheap (10 % of the verification time)
 
 . . .
 
@@ -129,17 +82,15 @@ Equality test:
 
 - decide if two formulae represent the same configurations
 
-- cannot be done syntactically
+- cannot be done syntactically (SMT solver)
 
-- quantified query to SMT solver
-
-- expensive operation (75 % of verification time)
+- expensive (75 % of the verification time)
 
 # Accelerating Control-Explicit Data-Symbolic Verification
 
 ## Equality Query Caching
 
-Verification time is crucial factor for tool usability
+**Verification time is crucial factor for tool usability**
 
 - equality tests take most of the verification time
 
@@ -147,7 +98,7 @@ Verification time is crucial factor for tool usability
 
 - possibility of query caching
 
-    - well-explored in area of symbolic-execution
+    - well-explored in area of symbolic execution
 
 . . .
 
@@ -157,7 +108,7 @@ Verification time is crucial factor for tool usability
 
 ## Dependency-based caching
 
-Caching approaches from symbolic execution do not work due to quantification
+- caching approaches from symbolic execution not suitable
 
 - we developed new method -- Dependency-based caching
     
@@ -233,8 +184,6 @@ We evaluated effects of our approach on SV-COMP benchmarks
 ## Effect of Dependency-based caching
 
 ![](summary_chart.png)
-
-# Conclusion
 
 ## Conclusion
 

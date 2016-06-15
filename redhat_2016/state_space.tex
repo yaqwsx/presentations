@@ -47,10 +47,10 @@
     \draw [->] (s.east) -| ($(s.east) !0.3! (s42.west)$) |- (s42.west) node [near end, above=1pt] {\texttt{input}} ;
     \draw [->] (s.east) -| ($(s.east) !0.3! (sn.west)$) |- (sn.west) node [near end, above=1pt] {\texttt{input}} ;
     
-    \draw [->] (s0) -- (s0_compare) node [midway, above=0pt] {\texttt{compare}};
-    \draw [->] (s41) -- (s41_compare) node [midway, above=0pt] {\texttt{compare}};
-    \draw [->] (s42) -- (s42_compare) node [midway, above=0pt] {\texttt{compare}};
-    \draw [->] (sn) -- (sn_compare) node [midway, above=0pt] {\texttt{compare}};
+    \draw [->] (s0) -- (s0_compare) node [midway, above=0pt] {\texttt{a >= 42}};
+    \draw [->] (s41) -- (s41_compare) node [midway, above=0pt] {\texttt{a >= 42}};
+    \draw [->] (s42) -- (s42_compare) node [midway, above=0pt] {\texttt{a >= 42}};
+    \draw [->] (sn) -- (sn_compare) node [midway, above=0pt] {\texttt{a >= 42}};
     
     \draw [wave, ->] (s0_compare.east) -- (s0end) node [empty, midway, above=2pt] {};
     \draw [wave, ->] (s41_compare.east) -- (s41end) node [empty, midway, above=2pt] {};
@@ -93,8 +93,8 @@
       
       \draw [->] (s_sym.east) -- (s_nd_sym.west) node [midway, above=0pt] {\texttt{input}};
       
-      \draw [->] (s_nd_sym.east) -| ($(s_nd_sym.east) !0.2! (s1_sym.west)$) |- (s1_sym.west) node [near end, above=0pt] {\texttt{compare}};
-      \draw [->] (s_nd_sym.east) -| ($(s_nd_sym.east) !0.2! (s2_sym.west)$) |- (s2_sym.west) node [near end, above=0pt] {\texttt{compare}};
+      \draw [->] (s_nd_sym.east) -| ($(s_nd_sym.east) !0.2! (s1_sym.west)$) |- (s1_sym.west) node [near end, above=0pt] {\texttt{a >= 42}};
+      \draw [->] (s_nd_sym.east) -| ($(s_nd_sym.east) !0.2! (s2_sym.west)$) |- (s2_sym.west) node [near end, above=0pt] {\texttt{a >= 42}};
       
       \draw [wave, ->] (start_sym) -- (s_sym);
       \draw [wave, ->] (s1_sym) -- (s1end_sym);
