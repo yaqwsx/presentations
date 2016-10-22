@@ -210,7 +210,7 @@ Caching might be a reasonable optimization...
 
 . . .
 
-\hfill{} ...but traditional approaches do not work
+\hfill{} ...but traditional approaches do not work.
 
 ## State Slicing
 
