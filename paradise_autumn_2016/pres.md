@@ -27,7 +27,7 @@ date: 21th November 2016
 - LLVM-based verification framework
 - safety properties (CAV 2015)
     - assertions
-    - memory safety (including simple heap)
+    - memory safety (simple heap)
 - termination extension (TACAS 2016)
     - loop ranking function synthesis
 - no concurrency support
@@ -67,7 +67,7 @@ date: 21th November 2016
 - C source code $\xrightarrow{Clang}$ LLVM bitcode
 - LLVM-to-LLVM transformations
     - optimizations
-    - stubs for built-ins (malloc)
+    - stubs for built-ins
     - lower `switch` to `if-then-else`
     - one exit block per function
     - move global initializers into `main`
@@ -81,23 +81,32 @@ date: 21th November 2016
 - call to function P either:
     - fails and P does not return, or
     - P returns successfully
-- instrumentation:
-    - non-deterministically choose if P fails
-    - if P fails, make copy of P body in main, jump to copy
-    - if P does not fail, call P (replace assertions with assumes)
+
+. . .
+
+**Transformation**
+
+- make copy of P body in main if P can fail
+- replace assertions with assumes in original function
+- when calling non-deterministically choose if P fails
+    - if P fails, jump to copy
+    - if P does not fail, call P
 
 . . .
 
 - reachability and non-termination preserved
+- all function calls are safe $\rightarrow$ easy translation
 - easier verification (context-sensitivity)
 
 ## Lifting Assertions
 
 \includegraphics[page=6, clip, trim=4.5cm 20cm 4.5cm 4cm, width=\textwidth]{paper}
 
-- non-determinacally choose if P fails
-- if P fails, make copy of P body in main, jump to copy
-- if P does not fail, call P (replace assertions with assumes)
+- make copy of P body in main if P can fail
+- replace assertions with assumes in original function
+- non-deterministically choose if P fails
+- if P fails, jump to copy
+- if P does not fail, call P
 
 ## Buffer Overflow Instrumentation
 
@@ -123,8 +132,8 @@ date: 21th November 2016
     - registers only in Linear Integer Arithmetics (LIA)
     - registers + pointers (without content) in LIA
     - registers + pointers + memory in LIA with array theory
-- function handling:
-    - inlining
+- function calls are problematic:
+    - inlining (assert lifting)
     - interprocedural translation
 
 ## Constrained Horn Clauses (CHC)
@@ -133,16 +142,21 @@ date: 21th November 2016
 - CHC is a formula: $\forall\mathcal{V}(\varphi\wedge p_1[X_1]\wedge\cdots\wedge p_k[X_k]\rightarrow h[X])$
     - $\varphi$: a constraint over $\mathcal{F}$ and $\mathcal{V}$ with respect to a  theory
     - $X_i$: vectors of variables
-    - $p\in\mathcal{P}, h$: predicates
+    - $p, h$: predicates
 - usually written as $h[X] \leftarrow\varphi,p_1[X_1],\cdots, p_k[X_k]$
     - head $\leftarrow$ body
     - empty body = fact
-    - $h\in\mathcal{P}$ = rule
-    - $h\notin\mathcal{P}$ = query
+    - otherwise = rule
 - satisfiable if there exist an interpretation of $\mathcal{P}$ s.t. $\varphi$ is true
-- safety property can be encoded
+- reachability can be encoded
 
 ## Simple Translation
+
+**No failing function calls, small-step encoding**
+
+- encode rechability of a single error location
+
+. . .
 
 - construct control flow-graph (LLVM basic blocks)
 - add self-loop for end nodes
@@ -169,11 +183,14 @@ date: 21th November 2016
 **Interprocedural translation**
 
 - similar to simple translation
-- summary rules (effect of a procedure)
-- need to propagate errors back to `main`
-    - 2 extra flag arguments for each function/summary rule
+    - encode reachability of a single error location
+- summary rule for each function call
+- cannot "jump" to error location from multiple locations
+- need to propagate errors back
+    - 2 extra flag parameters for summary rules
     - flag 1 if error occurred before call
     - flag 2 if error occurred in the call
+    - propagate error back to main
 
 ## Interprocedural Translation
 
