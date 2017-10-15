@@ -27,6 +27,17 @@ date: 16th October 2017
 
 Solution: use abstraction
 
+## Predicate Abstraction in a Nutshell
+
+- idea:
+    - do not keep full states
+    - keep only truth values of predicates over data
+- abstract function: $\alpha(s) = (p_1(s), p_2(s),...,p_n(s))$
+
+. . .
+
+- challenge: correctly and efficiently compute transitions
+
 ## Predicate Abstraction in C2BP
 
 Input:
@@ -45,7 +56,7 @@ Output:
     - only boolean variables
     - number of variables = $|E|$
 
-## Example - List Partition
+## Example -- List Partition
 
 ```{.c}
 typedef struct cell { int val; struct cell* next;} *list;
@@ -67,17 +78,14 @@ list partition(list *l, int v) {
 }
 ```
 
-## Boolean Program Example - List Partition
+## Boolean Program Example -- List Partition
 
 - $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
 
 \bigskip
 
-\only<1>{
-    \begin{Shaded}
+\begin{Shaded}
     \begin{Highlighting}[]
-    \KeywordTok{typedef} \KeywordTok{struct}\NormalTok{ cell \{ }\DataTypeTok{int}\NormalTok{ val; }\KeywordTok{struct}\NormalTok{ cell* next;\} *list;}
-
     \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
     \NormalTok{    list curr, prev, newl, nextCurr;}
     \NormalTok{    curr = *l; prev = NULL; newl = NULL;}
@@ -94,8 +102,394 @@ list partition(list *l, int v) {
         \ControlFlowTok{return}\NormalTok{ newl;}
     \NormalTok{\}}
     \end{Highlighting}
-    \end{Shaded}
-}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \AlertTok{    list curr, prev, newl, nextCurr;}
+    \NormalTok{    curr = *l; prev = NULL; newl = NULL;}
+        \ControlFlowTok{while}\NormalTok{ (curr != NULL) \{}
+    \NormalTok{        nextCurr = curr->next;}
+            \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \AlertTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \AlertTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    curr = *l; prev = NULL; newl = NULL;}
+        \ControlFlowTok{while}\NormalTok{ (curr != NULL) \{}
+    \NormalTok{        nextCurr = curr->next;}
+            \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \AlertTok{    curr = *l; prev = NULL; newl = NULL;}
+        \ControlFlowTok{while}\NormalTok{ (curr != NULL) \{}
+    \NormalTok{        nextCurr = curr->next;}
+            \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \AlertTok{    \{curr==NULL\} = unknown();}
+    \AlertTok{    \{curr->val>v\} = unknown();}
+    \AlertTok{    \{curr->val>v\} = unknown();}
+    \AlertTok{    \{curr->val>v\} = unknown();}
+        \ControlFlowTok{while}\NormalTok{ (curr != NULL) \{}
+    \NormalTok{        nextCurr = curr->next;}
+            \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+        \AlertTok{while}\AlertTok{ (curr != NULL) \{}
+    \NormalTok{        nextCurr = curr->next;}
+            \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+        \AlertTok{while}\AlertTok{ (choose(2)) \{}
+    \AlertTok{        assume(!\{curr==NULL\});}
+    \NormalTok{        nextCurr = curr->next;}
+            \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+        \NormalTok{while}\NormalTok{ (choose(2)) \{}
+    \NormalTok{        assume(!\{curr==NULL\});}
+    \AlertTok{        nextCurr = curr->next;}
+            \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+        \NormalTok{while}\NormalTok{ (choose(2)) \{}
+    \NormalTok{        assume(!\{curr==NULL\});}
+    \AlertTok{        skip();}
+            \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+        \NormalTok{while}\NormalTok{ (choose(2)) \{}
+    \NormalTok{        assume(!\{curr==NULL\});}
+    \NormalTok{        skip();}
+            \AlertTok{if}\AlertTok{ (curr->val > v) \{}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+        \NormalTok{while}\NormalTok{ (choose(2)) \{}
+    \NormalTok{        assume(!\{curr==NULL\});}
+    \NormalTok{        skip();}
+            \AlertTok{if}\AlertTok{ (choose(2)) \{}
+                \AlertTok{assme(\{cur->val\}>v);}
+                \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+        \NormalTok{while}\NormalTok{ (choose(2)) \{}
+    \NormalTok{        assume(!\{curr==NULL\});}
+    \NormalTok{        skip();}
+            \NormalTok{if}\NormalTok{ (choose(2)) \{}
+                \NormalTok{assme(\{cur->val\}>v);}
+                \AlertTok{if}\AlertTok{ (prev != NULL) prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
+## Boolean Program Example -- List Partition
+
+\addtocounter{framenumber}{-1}
+
+- $E$ = $\{$ `curr == NULL`, `prev == NULL`, `curr->val > v`, `prev->val > v` $\}$
+
+\bigskip
+
+\begin{Shaded}
+    \begin{Highlighting}[]
+    \NormalTok{list partition(list *l, }\DataTypeTok{int}\NormalTok{ v) \{}
+    \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
+    \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
+    \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{curr->val>v\} = unknown();}
+        \NormalTok{while}\NormalTok{ (choose(2)) \{}
+    \NormalTok{        assume(!\{curr==NULL\});}
+    \NormalTok{        skip();}
+            \NormalTok{if}\NormalTok{ (choose(2)) \{}
+                \NormalTok{assme(\{cur->val\}>v);}
+                \AlertTok{if}\AlertTok{ (choose(2))\{}
+                    \AlertTok{assume(\{!(prev==NULL\})};
+                    \AlertTok{prev->next = nextCurr;}
+                \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
+    \NormalTok{            curr->next = newl; newl = curr;}
+    \NormalTok{        \} }\ControlFlowTok{else}
+    \NormalTok{            prev = curr;}
+    \NormalTok{        curr = nextCurr;}
+    \NormalTok{    \}}
+        \ControlFlowTok{return}\NormalTok{ newl;}
+    \NormalTok{\}}
+    \end{Highlighting}
+\end{Shaded}
+
 
 ## Properties of Boolean Programs
 
