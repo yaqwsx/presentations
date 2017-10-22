@@ -203,9 +203,9 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \AlertTok{    \{curr==NULL\} = unknown();}
+    \AlertTok{    \{prev==NULL\} = true;}
     \AlertTok{    \{curr->val>v\} = unknown();}
-    \AlertTok{    \{curr->val>v\} = unknown();}
-    \AlertTok{    \{curr->val>v\} = unknown();}
+    \AlertTok{    \{prev->val>v\} = unknown();}
         \ControlFlowTok{while}\NormalTok{ (curr != NULL) \{}
     \NormalTok{        nextCurr = curr->next;}
             \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
@@ -235,9 +235,9 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{prev==NULL\} = true;}
     \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{prev->val>v\} = unknown();}
         \AlertTok{while}\AlertTok{ (curr != NULL) \{}
     \NormalTok{        nextCurr = curr->next;}
             \ControlFlowTok{if}\NormalTok{ (curr->val > v) \{}
@@ -267,9 +267,9 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{prev==NULL\} = true;}
     \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{prev->val>v\} = unknown();}
         \AlertTok{while}\AlertTok{ (choose(2)) \{}
     \AlertTok{        assume(!\{curr==NULL\});}
     \NormalTok{        nextCurr = curr->next;}
@@ -300,9 +300,9 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{prev==NULL\} = true;}
     \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{prev->val>v\} = unknown();}
         \NormalTok{while}\NormalTok{ (choose(2)) \{}
     \NormalTok{        assume(!\{curr==NULL\});}
     \AlertTok{        nextCurr = curr->next;}
@@ -334,9 +334,9 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{prev==NULL\} = true;}
     \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{prev->val>v\} = unknown();}
         \NormalTok{while}\NormalTok{ (choose(2)) \{}
     \NormalTok{        assume(!\{curr==NULL\});}
     \AlertTok{        skip();}
@@ -367,9 +367,9 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{prev==NULL\} = true;}
     \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{prev->val>v\} = unknown();}
         \NormalTok{while}\NormalTok{ (choose(2)) \{}
     \NormalTok{        assume(!\{curr==NULL\});}
     \NormalTok{        skip();}
@@ -400,14 +400,14 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{prev==NULL\} = true;}
     \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{prev->val>v\} = unknown();}
         \NormalTok{while}\NormalTok{ (choose(2)) \{}
     \NormalTok{        assume(!\{curr==NULL\});}
     \NormalTok{        skip();}
             \AlertTok{if}\AlertTok{ (choose(2)) \{}
-                \AlertTok{assme(\{cur->val\}>v);}
+                \AlertTok{assume(\{cur->val>v\});}
                 \ControlFlowTok{if}\NormalTok{ (prev != NULL) prev->next = nextCurr;}
                 \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
     \NormalTok{            curr->next = newl; newl = curr;}
@@ -434,14 +434,14 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{prev==NULL\} = true;}
     \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{prev->val>v\} = unknown();}
         \NormalTok{while}\NormalTok{ (choose(2)) \{}
     \NormalTok{        assume(!\{curr==NULL\});}
     \NormalTok{        skip();}
             \NormalTok{if}\NormalTok{ (choose(2)) \{}
-                \NormalTok{assme(\{cur->val\}>v);}
+                \NormalTok{assume(\{cur->val>v\});}
                 \AlertTok{if}\AlertTok{ (prev != NULL) prev->next = nextCurr;}
                 \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
     \NormalTok{            curr->next = newl; newl = curr;}
@@ -468,16 +468,16 @@ list partition(list *l, int v) {
     \NormalTok{    bool \{curr==NULL\}, \{prev==NULL\};}
     \NormalTok{    bool \{curr->val>v\}, \{prev->val>v\};}
     \NormalTok{    \{curr==NULL\} = unknown();}
+    \NormalTok{    \{prev==NULL\} = true;}
     \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
-    \NormalTok{    \{curr->val>v\} = unknown();}
+    \NormalTok{    \{prev->val>v\} = unknown();}
         \NormalTok{while}\NormalTok{ (choose(2)) \{}
     \NormalTok{        assume(!\{curr==NULL\});}
     \NormalTok{        skip();}
             \NormalTok{if}\NormalTok{ (choose(2)) \{}
-                \NormalTok{assme(\{cur->val\}>v);}
+                \NormalTok{assume(\{cur->val>v\});}
                 \AlertTok{if}\AlertTok{ (choose(2))\{}
-                    \AlertTok{assume(\{!(prev==NULL\})};
+                    \AlertTok{assume(!\{(prev==NULL\})};
                     \AlertTok{prev->next = nextCurr;}
                 \ControlFlowTok{if}\NormalTok{ (curr == *l) *l = nextCurr;}
     \NormalTok{            curr->next = newl; newl = curr;}
@@ -557,8 +557,8 @@ For statement $s$ and a predicate $\varphi$:
 ## Strengtening of a Predicate
 
 - denote $V$ as a set of boolean variables $\{b_1,b_2,\cdots,b_n\}$
-- *cube* over $V$ is a conjunction $c_1\wedge c_2\wedge\cdots\wedge c_n$ where $c_i\in\{b_i, \neg b_j\}$
-- denote $\mathcal{E}(b_i)$ as corresponding predicate $\varphi_i$ to $b_i$
+- *cube* over $V$ is a conjunction $c_1\wedge c_2\wedge\cdots\wedge c_k$ where $c_i\in\{b_i, \neg b_i\}$
+- denote $\mathcal{E}(b_i)$ as a corresponding predicate $\varphi_i$ to $b_i$
 - extend $\mathcal{E}$ to cubes
 
 . . .
@@ -624,8 +624,8 @@ else {
 
 - local predicates vs. global predicates
 - each function can be transformed independently
-    - arguments - values of local predicates referring to formal parameters
-    - return value - tuple of updated global and local predicates
+    - arguments -- values of local predicates referring to formal parameters
+    - return value -- tuple of updated global and local predicates
 - when calling function
     - compute actual value of formal arguments (predicates)
     - call and store return value to a new tuple of variable
