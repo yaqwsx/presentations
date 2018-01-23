@@ -39,16 +39,45 @@ aspectratio: 169
 
 # Support for Synchronous Systems
 
-## Threads in DiOS
+## Concurrency in DIVINE 4
 
-- DiVM is not aware of threads
-- threads are implemented as a user-space extension
-    - user-defined scheduler
-- to support synchronous systems we simply define a new scheduler
+- DiVM is not aware of threads/processes
+- concurrency is implemented as a user space extension
+    - structure for concurrency primitives (threads/processes)
+    - user-defined scheduler (asynchronous)
+- to support synchronous systems we simply define
+    - task as a primitive
+    - synchronous scheduler
 
-## Semantics of Synchronous Tasks
+## Synchronous Tasks
 
-- ToDo: Example & show mapping to Simulink diagram
+```{.cpp}
+volatile bool pin1 = false;
+volatile bool pin2 = false;
+
+void foo() {
+    pin1 = true; __dios_yield(); pin1 = false; __dios_yield();
+}
+
+void boo() {
+    pin2 = !pin2;  __dios_yield();
+}
+
+int main() {
+    auto cmp1 = __dios_start_task( foo, nullptr, 0 );
+    auto cmp2 = __dios_start_task( boo, nullptr, 0 );
+    __dios_task_dependency( cmp1, cmp2 );
+}
+```
+
+## Proposed Mapping Synchronous Tasks to Simulink
+
+- each Simulink "box" is one task
+- tasks have dependencies based on connections between pins
+- at each systick:
+    - each task makes a step (continues until `__dios_yield`)
+    - task dependencies are respected
+    - new state is produced
 
 # Symbolic Data Support
 
@@ -77,16 +106,17 @@ aspectratio: 169
 
 ## Where Are We Standing?
 
-- all components are implemented independently
+- all components (tasks, symbolic data, memory models) are implemented
+  independently
 - they need to be tested together
 - we have no adapter for Simulink diagrams
 - is there a use for weak memory models for Honeywell?
 
 . . .
 
-- get Simulink & and C/C++/LLVM counterpart examples
-- benchmark it
+- figure out transformation of Simulink diagrams into C++/LLVM IR
+- get benchmarks and evaluate
 
 \pause
 
-Thank you
+**Thank you**
