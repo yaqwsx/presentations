@@ -24,7 +24,7 @@ aspectratio: 169
 - tightly coupled to \llvm IR (high-level assembly)
     - no other input formalism is supported
     - no CESMI
-- "micro-kernel" DIVINE - DiVM
+- "micro-kernel" DIVINE -- DiVM
     - most of the functionality is implemented in user-space
     - better modularity
 - better support for counterexamples
