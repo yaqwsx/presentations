@@ -83,10 +83,12 @@ aspectratio: 169
     \draw [flow, dashed] (exploration) -- (res);
 \end{tikzpicture}
 }
+. . .
 
-## DIVINE Workflow for Simulink Verification
+**Required changes for Simulink verification:**
 
-- ToDo Image
+- synchronous systems
+- symbolic data
 
 # Support for Synchronous Systems
 
@@ -168,10 +170,6 @@ int input() {
 }
 ```
 
-## DIVINE Workflow for Symbolic Verification
-
-TODO image
-
 ## Capabilities
 
 - integers and arithmetic
@@ -229,6 +227,17 @@ TODO image
 . . .
 
 **Future plans to eliminate all these limits**
+
+## Generic framework
+
+- symbolic verification is only single use case
+- we can transform program to arbitrary given semantics
+
+```{.cpp}
+    _PREDICATE int x;
+```
+- just need to provide semantics of operations in predicate abstraction
+- transformation should do all the rest
 
 # Relaxed Memory
 
@@ -401,22 +410,20 @@ int a = _load( &y );
 
 ## How it All Fits Together
 
-TODO
-
 \resizebox{\textwidth}{!}{
 \begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=4em, <->]
 \tikzset{>=latex}
 
     \tikzstyle{smt}=[fill=ucla!40]
-    \node [component](cc) {DIVINE compiler};
+    \node [component, draw = red, text=red, thick](cc) {Simulink compiler};
     \node [clabel, above = 0.7 cm of cc] (preprocessing) {Preprocessing};
-    \node [component, right = 0.5 cm of cc](lart) {LART};
-    \node [emptycomponent, dashed, thick, below = 0.6 cm of cc] (dios) {DiOS and libraries};
+    \node [component, right = 0.5 cm of cc, draw = red, text =red, thick ](lart) {LART};
+    \node [emptycomponent, dashed, thick, below = 0.6 cm of cc, thick, draw = red, text = red] (dios) {DiOS and libraries};
 
     \node [component, right = 0.6 cm of lart, ](interpreter) {Interpreter};
     \node [component, right = 0.5 cm of interpreter, minimum width=1 cm](generator) {State space generator};
 
-    \node [component, below = 0.6 cm of generator, minimum width=1 cm](exploration) {Exploration algorithm};
+    \node [component, below = 0.6 cm of generator, minimum width=1 cm, draw = red, text =red ](exploration) {Symbolic exploration};
     \node [clabel, right = 3 cm of preprocessing] (divine) {DIVINE};
 
     \node [right = 0.5 cm of exploration ] (res)
@@ -434,7 +441,7 @@ TODO
         \node[verification, outer, fit = (interpreter) (generator) (exploration) (divine) (divm) ] (di) {};
     \end{pgfonlayer}
 
-    \node [left = 1.5 cm of cc, color=pruss] (start) {C++ program};
+    \node [left = 1.5 cm of cc, color=pruss] (start) {Simulink diagram};
     \node [right = 2 cm of exploration] (end) {};
     \node [below = 2.3 cm of start, color=pruss, text width = 1.5 cm] (property) {\centering property and\\ options};
 
