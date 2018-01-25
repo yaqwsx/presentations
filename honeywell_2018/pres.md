@@ -25,7 +25,7 @@ aspectratio: 169
 - tightly coupled to \llvm IR (high-level assembly)
     - no other input formalism is supported
     - no CESMI
-- "micro-kernel" DIVINE -- DiVM
+- DIVINE core -- DiVM
     - most of the functionality is implemented in user-space
     - better modularity
 - better support for counterexamples
@@ -238,14 +238,11 @@ int input() {
 ## Generic framework
 
 - symbolic verification is only single use case
-- we can transform program to arbitrary given semantics
+- framework can implement data and predicate abstractions
 
 ```{.cpp}
-    _PREDICATE int x;
+    _INTERVAL int x;
 ```
-- just need to provide semantics of operations in predicate abstraction
-- transformation should do all the rest
-
 # Towards Verification of Simulink
 
 ## How it All Fits Together
@@ -444,13 +441,14 @@ void thread0() {              void thread1() {
 
 - overall behaviour described by a **(relaxed) memory model**
 
-## Memory-Model-Aware Analysis -- My Approach
+## Memory-Model-Aware Analysis
 
 - encode the memory model into the program
 - verify it using a verifier without memory model support
-  - e.g. DIVINE, a lot of other verifiers
-  - program transformation instead of modification of the verifier
-  - on the level of LLVM
+
+    - e.g. DIVINE, a lot of other verifiers
+    - program transformation instead of modification of the verifier
+    - on the level of LLVM
 
 . . .
 
@@ -475,8 +473,8 @@ int a = _load( &y );
 - primarily detection of errors (assertions, memory errors) under given relaxed
   memory mode
 
-  - i.e. not detection of behaviour different from sequential consistency
-  - in future also possibly race detection
+    - i.e. not detection of behaviour different from sequential consistency
+    - in future also possibly race detection
 
 - focus on performance, correctness of memory model simulation
 
