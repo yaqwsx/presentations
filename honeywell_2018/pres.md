@@ -1,10 +1,5 @@
 ---
 title: DIVINE 4
-author:
-    - Jan Mrázek
-    - Henrich Lauko
-    - Petr Ročkai
-    - Vladimír Štill
 header-includes:
     - \usepackage{divine}
     - \usepackage{multirow}
@@ -231,7 +226,7 @@ int input() {
 - structures with symbolic values
 
 ```{.cpp}
-    struct Node { int value; } node;
+    struct Node { int value; Node *next; } node;
     node.value = x;
 ```
 . . .
