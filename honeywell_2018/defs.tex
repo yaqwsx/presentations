@@ -1,0 +1,131 @@
+\definecolor{orioles}{HTML}{F6511D}
+\definecolor{ucla}{HTML}{FFB400}
+\definecolor{vivid}{HTML}{00A6ED}
+\definecolor{apple}{HTML}{7FB800}
+\definecolor{pruss}{HTML}{0D2C54}
+
+\usetikzlibrary{shapes, arrows, automata, shadows, positioning, calc, shapes.geometric, fit, backgrounds, decorations.pathmorphing}
+
+\tikzset{
+    treenode/.style= {
+        align = center,
+        inner sep = 0pt,
+        text=pruss,
+        minimum width = 0.75cm,
+        minimum height = 0.75cm,
+        text centered,
+        prefix after command= {
+            \pgfextra{\tikzset{every label/.style={
+            color=pruss,
+            font=\ttfamily
+        }}}}
+    },
+    clabel/.style={
+        color=pruss,
+        font=\bfseries
+    },
+    fnode/.style = {
+        align = center,
+        inner sep = 0pt,
+        text=pruss,
+        minimum width = 0.75cm,
+        minimum height = 0.75cm,
+        text centered
+    },
+    fvar/.style = {
+        rectangle,
+        fnode,
+        draw,
+        thick,
+        color=pruss
+    },
+    fop/.style = {
+        circle,
+        fnode,
+        fill=apple!40
+    },
+    fatom/.style = {
+        circle,
+        fill=pruss
+    },
+    ftreenode/.style = {
+        treenode,
+        circle,
+        fill=apple!40
+    },
+    pass/.style = {
+        draw,
+        inner sep=3pt,
+        rounded corners= 3pt,
+        minimum width = 0cm,
+        minimum height = 1.5cm,
+        text width = 3cm,
+        node distance = 4cm,
+        text centered,
+        color=pruss,
+        fill=pruss!10
+    },
+    data/.style={
+        rounded corners = 2mm,
+        minimum height = 1cm,
+        text width = 3.7cm,
+        inner sep =5pt,
+        align = center,
+        text=pruss
+    },
+    llvm/.style={
+        draw,
+        dotted,
+        thick,
+        minimum height = 1cm,
+        text width = 3.7cm,
+        align = center,
+        color=pruss,
+        fill=white,
+        font = \ttfamily
+    },
+    clllvm/.style={
+        llvm,
+        text=orioles
+    },
+    pc/.style={
+        data,
+        font = \ttfamily,
+        fill=apple!40,
+    },
+    br/.style={
+        data,
+        diamond,
+        aspect=2.5,
+        inner sep=-2pt,
+        fill=ucla!40,
+        font = \ttfamily
+    },
+    flow/.style={
+        ->,
+        thick,
+        color=pruss
+    },
+    emptycomponent/.style={
+        draw, text centered,
+        rounded corners=3pt, minimum height=3 em,
+        minimum width=2.2 cm, text width=2 cm,
+        thick,
+        color=pruss
+    },
+    component/.style={
+        emptycomponent,
+        fill=white
+    },
+    runtime/.style={
+        component,
+        fill=vivid!40
+    },
+    verification/.style={
+        component,
+        fill=apple!40
+    },
+    outer/.style={
+        draw=none
+    },
+}
