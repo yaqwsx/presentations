@@ -30,6 +30,53 @@ aspectratio: 169
     - better modularity
 - better support for counterexamples
 
+## DIVINE Architecture
+
+\resizebox{\textwidth}{!}{
+
+\begin{tikzpicture}[>=stealth,shorten >=1pt,auto,node distance=4em, <->]
+
+\tikzstyle{bcomponent} = [
+     color=pruss,
+    fill=white,
+    thick,
+    draw,
+    text centered,
+    minimum height= 1cm,
+    minimum width=2.2 cm,
+    text width=6 cm,
+];
+
+\node [bcomponent] (input) {User's program $+$ libraries};
+\node [clabel, above = 0cm of input] (renv) {Runtime environment};
+\node [bcomponent, below = 0cm of input] (runtime) {C++ standard libraries, \texttt{pthreads}};
+\node [fnlabel, right = 1.7cm of runtime] (syslabel) {syscalls};
+\node [color = pruss, left = 2cm of runtime] (divine) {DIVINE};
+\node [bcomponent, below = 0cm of runtime] (dios) {DIOS};
+
+\node [clabel, below = 0.4cm of dios] (venv) {Verification core};
+\node [fnlabel, left = 3.2cm of venv] (hyplabel) {hypercalls};
+\node [bcomponent, below = 0cm of venv] (divm) {DIVM};
+\node [bcomponent, below = 0cm of divm] (vc) {Verification algorithm};
+
+
+\begin{pgfonlayer}{background}
+     \node[runtime, outer, fit = (renv) (input) (runtime) (dios)] (runtimebox) {};
+\end{pgfonlayer}
+
+\begin{pgfonlayer}{background}
+  \node[verification, outer, fit = (venv) (divm) (vc)] (verificationbox) {};
+\end{pgfonlayer}
+
+\draw [-,dashed, very thick, color = pruss] ([xshift=4cm]input.south east) -- ([xshift=-4cm]input.south west);
+\draw [flow,rectangle connector=1.5cm] (input.east) to (dios.east);
+\draw [flow,rectangle connector=0.75cm] (runtime.east) to (dios.east);
+
+\draw [flow,rectangle connector=-1.5cm] (runtime.west) to (divm.west);
+\draw [flow,rectangle connector=-0.75cm] (dios.west) to (divm.west);
+\end{tikzpicture}
+}
+
 ## Traditional DIVINE Workflow
 
 \resizebox{\textwidth}{!}{

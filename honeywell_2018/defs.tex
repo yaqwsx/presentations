@@ -128,4 +128,22 @@
     outer/.style={
         draw=none
     },
+    connector/.style={
+        -latex,
+        font=\scriptsize
+    },
+    fnlabel/.style={
+        color=pruss,
+        font=\ttfamily
+    },
+    rectangle connector/.style={
+        connector,
+        to path={(\tikztostart) -- ++(#1,0pt) \tikztonodes |- (\tikztotarget) },
+        pos=0.5
+    },
+    rectangle connector/.default=-2cm,
+    straight connector/.style={
+        connector,
+        to path=--(\tikztotarget) \tikztonodes
+    }
 }
