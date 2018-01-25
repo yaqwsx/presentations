@@ -83,6 +83,7 @@ aspectratio: 169
     \draw [flow, dashed] (exploration) -- (res);
 \end{tikzpicture}
 }
+
 . . .
 
 **Required changes for Simulink verification:**
@@ -94,7 +95,7 @@ aspectratio: 169
 
 ## Concurrency in DIVINE 4
 
-- DiVM is not aware of threads/processes
+- DiVM has not built-in support for threads/processes
 - concurrency is implemented as a user space extension
     - structure for concurrency primitives (threads/processes)
     - user-defined scheduler (asynchronous)
@@ -108,18 +109,18 @@ aspectratio: 169
 volatile bool pin1 = false;
 volatile bool pin2 = false;
 
-void foo() {
+void square() {
     pin1 = true; __dios_yield(); pin1 = false; __dios_yield();
 }
 
-void boo() {
-    pin2 = !pin2;  __dios_yield();
+void inverter() {
+    pin2 = !pin1;  __dios_yield();
 }
 
 int main() {
-    auto cmp1 = __dios_start_task( foo, nullptr, 0 );
-    auto cmp2 = __dios_start_task( boo, nullptr, 0 );
-    __dios_task_dependency( cmp1, cmp2 );
+    auto comp1 = __dios_start_task( square, nullptr, 0 );
+    auto comp2 = __dios_start_task( inverter, nullptr, 0 );
+    __dios_task_dependency( comp1, comp2 );
 }
 ```
 
@@ -189,18 +190,21 @@ int input() {
 . . .
 
 - explicit pointers to symbolic values
+
 ```{.cpp}
     int *p = &x;
 ```
 . . .
 
 - function calls
+
 ```{.cpp}
     foo( x );
 ```
 ## Current Limits
 
 - arrays of symbolic data
+
 ```{.cpp}
     int arr[10];
     arr[0] = x;
@@ -208,18 +212,21 @@ int input() {
 . . .
 
 - arrays of symbolic size
+
 ```{.cpp}
     int arr[x];
 ```
 . . .
 
 - symbolic pointers
+
 ```{.cpp}
     _SYM int *p;
 ```
 . . .
 
 - symbolic values on the heap
+
 ```{.cpp}
     int *p = malloc(sizeof(int));
     *p = x;
@@ -238,6 +245,75 @@ int input() {
 ```
 - just need to provide semantics of operations in predicate abstraction
 - transformation should do all the rest
+
+# Towards Verification of Simulink
+
+## How it All Fits Together
+
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=4em, <->]
+\tikzset{>=latex}
+
+    \tikzstyle{smt}=[fill=ucla!40]
+    \node [component, draw = red, text=red, thick](cc) {Simulink compiler};
+    \node [clabel, above = 0.7 cm of cc] (preprocessing) {Preprocessing};
+    \node [component, right = 0.5 cm of cc, draw = red, text =red, thick ](lart) {LART};
+    \node [emptycomponent, dashed, thick, below = 0.6 cm of cc, thick, draw = red, text = red] (dios) {DiOS and libraries};
+
+    \node [component, right = 0.6 cm of lart, ](interpreter) {Interpreter};
+    \node [component, right = 0.5 cm of interpreter, minimum width=1 cm](generator) {State space generator};
+
+    \node [component, below = 0.6 cm of generator, minimum width=1 cm, draw = red, text =red ](exploration) {Symbolic exploration};
+    \node [clabel, right = 3 cm of preprocessing] (divine) {DIVINE};
+
+    \node [right = 0.5 cm of exploration ] (res)
+    {\color{apple}{Valid}\color{pruss}/\color{orioles}{Error}};
+
+    \node [clabel, above = 0.9 cm of interpreter.west, anchor = west] (divml)
+    {DiVM};
+    \node[emptycomponent, dashed, fit = (interpreter) (generator) (divml)] (divm) {};
+
+    \begin{pgfonlayer}{background}
+        \node[runtime, outer, fit = (cc) (lart) (preprocessing)(dios)] (prepbox) {};
+    \end{pgfonlayer}
+
+    \begin{pgfonlayer}{background}
+        \node[verification, outer, fit = (interpreter) (generator) (exploration) (divine) (divm) ] (di) {};
+    \end{pgfonlayer}
+
+    \node [left = 1.5 cm of cc, color=pruss] (start) {Simulink diagram};
+    \node [right = 2 cm of exploration] (end) {};
+    \node [below = 2.3 cm of start, color=pruss, text width = 1.5 cm] (property) {\centering property and\\ options};
+
+    \draw [flow] (cc) -- (lart);
+
+    \draw [flow] (dios) -- (cc);
+
+    \draw [flow] (lart) -- (interpreter);
+
+    \draw [flow, <->] (interpreter) -- (generator);
+
+    \draw [flow] (generator) -- (exploration);
+
+    \draw [flow, dashed] (start) -- (cc);
+    \draw [flow, dashed] (property) -| (interpreter);
+    \draw [flow, dashed] (property) -| (lart);
+    \draw [flow, dashed] (exploration) -- (res);
+\end{tikzpicture}
+}
+
+## Where Are We Standing?
+
+- all components (tasks, symbolic data) are implemented independently
+- they need to be tested together
+- we have no adapter for Simulink diagrams
+
+. . .
+
+**What needs to be done with Honeywell cooperation:**
+
+- figure out transformation of Simulink diagrams into C++/LLVM IR
+- get benchmarks and evaluate
 
 # Relaxed Memory
 
@@ -406,75 +482,3 @@ int a = _load( &y );
 
 - soon: `x86`-TSO, PSO, and Non-Speculative Writes
 
-# Conclusion
-
-## How it All Fits Together
-
-\resizebox{\textwidth}{!}{
-\begin{tikzpicture}[>=stealth',shorten >=1pt,auto,node distance=4em, <->]
-\tikzset{>=latex}
-
-    \tikzstyle{smt}=[fill=ucla!40]
-    \node [component, draw = red, text=red, thick](cc) {Simulink compiler};
-    \node [clabel, above = 0.7 cm of cc] (preprocessing) {Preprocessing};
-    \node [component, right = 0.5 cm of cc, draw = red, text =red, thick ](lart) {LART};
-    \node [emptycomponent, dashed, thick, below = 0.6 cm of cc, thick, draw = red, text = red] (dios) {DiOS and libraries};
-
-    \node [component, right = 0.6 cm of lart, ](interpreter) {Interpreter};
-    \node [component, right = 0.5 cm of interpreter, minimum width=1 cm](generator) {State space generator};
-
-    \node [component, below = 0.6 cm of generator, minimum width=1 cm, draw = red, text =red ](exploration) {Symbolic exploration};
-    \node [clabel, right = 3 cm of preprocessing] (divine) {DIVINE};
-
-    \node [right = 0.5 cm of exploration ] (res)
-    {\color{apple}{Valid}\color{pruss}/\color{orioles}{Error}};
-
-    \node [clabel, above = 0.9 cm of interpreter.west, anchor = west] (divml)
-    {DiVM};
-    \node[emptycomponent, dashed, fit = (interpreter) (generator) (divml)] (divm) {};
-
-    \begin{pgfonlayer}{background}
-        \node[runtime, outer, fit = (cc) (lart) (preprocessing)(dios)] (prepbox) {};
-    \end{pgfonlayer}
-
-    \begin{pgfonlayer}{background}
-        \node[verification, outer, fit = (interpreter) (generator) (exploration) (divine) (divm) ] (di) {};
-    \end{pgfonlayer}
-
-    \node [left = 1.5 cm of cc, color=pruss] (start) {Simulink diagram};
-    \node [right = 2 cm of exploration] (end) {};
-    \node [below = 2.3 cm of start, color=pruss, text width = 1.5 cm] (property) {\centering property and\\ options};
-
-    \draw [flow] (cc) -- (lart);
-
-    \draw [flow] (dios) -- (cc);
-
-    \draw [flow] (lart) -- (interpreter);
-
-    \draw [flow, <->] (interpreter) -- (generator);
-
-    \draw [flow] (generator) -- (exploration);
-
-    \draw [flow, dashed] (start) -- (cc);
-    \draw [flow, dashed] (property) -| (interpreter);
-    \draw [flow, dashed] (property) -| (lart);
-    \draw [flow, dashed] (exploration) -- (res);
-\end{tikzpicture}
-}
-
-## Where Are We Standing?
-
-- all components (tasks, symbolic data, memory models) are implemented
-  independently
-- they need to be tested together
-- we have no adapter for Simulink diagrams
-- is there a use for weak memory models for Honeywell?
-
-. . .
-
-- figure out transformation of Simulink diagrams into C++/LLVM IR
-- get benchmarks and evaluate
-
-\pause
-
-**Thank you**
