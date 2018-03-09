@@ -120,6 +120,14 @@ Add more constraints to overspecify the formula.
 - restricts the possible values a read can get
 - define a set of writes
 
+## Implementation
+
+- instrument reads and writes in the verified program
+    - PIR instrumentation framework
+- run it with random inputs
+    - possibly with guided thread scheduling: CHESS, CTrigger
+- construct the likely invariants based on ranks
+
 ## Implementation Challenges
 
 - monitored memory locations
@@ -136,7 +144,6 @@ Add more constraints to overspecify the formula.
 - training nose
     - incorrect oraculum
 
-
 ## Results
 
 - 50 random inputs and random interleaving for invariant mining
@@ -144,95 +151,3 @@ Add more constraints to overspecify the formula.
 - NoR = encoding without unnecessary writes
 
 \includegraphics[page=7, clip, trim=5.2cm 18.9cm 5cm 3.5cm, width=\textwidth]{paper1}
-
-## Motivation Example
-
-\lstset{basicstyle=\ttfamily}
-\lstset{language=C, numbers=left}
-\begin{columns}
-
-\begin{column}{0.45\textwidth}
-\begin{lstlisting}[
-    linebackgroundcolor={%
-        \ifnum\value{lstnumber}=1
-            %
-        \else\ifnum\value{lstnumber}=2
-            \color<2->{green!35}
-        \else\ifnum\value{lstnumber}=3
-            \color<3->{green!35}
-        \else\ifnum\value{lstnumber}=4
-            \color<4->{green!35}
-        \else\ifnum\value{lstnumber}=5
-            \color<5->{green!35}
-        \else\ifnum\value{lstnumber}=6
-            \color<10->{green!35}
-        \else\ifnum\value{lstnumber}=7
-            \color<11->{green!35}
-        \else\ifnum\value{lstnumber}=8
-            \color<12->{green!35}
-        \else\ifnum\value{lstnumber}=9
-            %
-        \fi\fi\fi\fi\fi\fi\fi\fi\fi
-  }]
-void* foo() {
-  while( r_y() < NUM ) {
-    int f1, f2;
-    f1 = r_y();
-    w_y( f1 + 1 );
-    f1 = r_x();
-    f2 = r_y();
-    w_x( f1 + f2 );
-  } }
-\end{lstlisting}
-\end{column}
-
-\begin{column}{0.45\textwidth}
-\begin{lstlisting}[
-    linebackgroundcolor={%
-        \ifnum\value{lstnumber}=1
-            %
-        \else\ifnum\value{lstnumber}=2
-            \color<6->{green!35}
-        \else\ifnum\value{lstnumber}=3
-            \color<6->{green!35}
-        \else\ifnum\value{lstnumber}=4
-            \color<7->{green!35}
-        \else\ifnum\value{lstnumber}=5
-            \color<8->{green!35}
-        \else\ifnum\value{lstnumber}=6
-            \color<9->{green!35}
-        \else\ifnum\value{lstnumber}=7
-            \color<13->{green!35}
-        \else\ifnum\value{lstnumber}=8
-            \color<14->{green!35}
-        \else\ifnum\value{lstnumber}=9
-            \color<14->{green!35}
-        \fi\fi\fi\fi\fi\fi\fi\fi\fi
-  }]
-void* boo() {
-  int b, b1, b2;
-  while( r_y() < NUM );
-  b = r_y();
-  b1 = r_x();
-  b2 = r_y();
-  w_y( b1 + b2 );
-  assert( r_y() ==
-    b + r_x() );
-}
-\end{lstlisting}
-\end{column}
-\end{columns}
-
-\begin{table}[]
-\centering
-\begin{tabular}{lllll|l}
-\multicolumn{1}{l|}{\textbf{x}} & \only<1-11>{5}\only<12->{47}  &
-\multicolumn{1}{l|}{\textbf{f1}} & \only<4-9>{41}\only<10->{5}  &
-\textbf{b}  &  \only<7->{42} \\
-\multicolumn{1}{l|}{\textbf{y}} & \only<1-4>{41}\only<5-12>{42}\only<13->{47} &
-\multicolumn{1}{l|}{\textbf{f2}} & \only<11->{42} &
-\textbf{b1} & \only<8->{5}  \\&  &
-\textbf{} &  &
-\textbf{b2} & \only<9->{42}
-\end{tabular}
-\end{table}
