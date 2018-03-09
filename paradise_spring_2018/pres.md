@@ -66,18 +66,18 @@ Add more constraints to overspecify the formula.
 ## Local/Remote Invariant Motivation
 
 \centering
-\includegraphics[page=3, clip, trim=1.9cm 21.7cm 10.5cm 3.5cm, width=0.8\textwidth]{paper2}
+\includegraphics[page=3, clip, trim=1.9cm 21.7cm 10.5cm 3.5cm, width=\textwidth]{paper2}
 
 \centering
-\includegraphics[page=3, clip, trim=11.1cm 21.7cm 1.9cm 3.5cm, width=0.8\textwidth]{paper2}
+\includegraphics[page=3, clip, trim=11.1cm 21.7cm 1.9cm 3.5cm, width=\textwidth]{paper2}
 
 ## Local/Remote Invariant Motivation
 
 \centering
-\includegraphics[page=3, clip, trim=1.9cm 18.2cm 10.5cm 6.7cm, width=0.8\textwidth]{paper2}
+\includegraphics[page=3, clip, trim=1.9cm 18.2cm 10.5cm 6.7cm, width=\textwidth]{paper2}
 
 \centering
-\includegraphics[page=3, clip, trim=11.1cm 18.2cm 1.9cm 6.7cm, width=0.8\textwidth]{paper2}
+\includegraphics[page=3, clip, trim=11.1cm 18.2cm 1.9cm 6.7cm, width=\textwidth]{paper2}
 
 ## Local/Remote Invariant
 
@@ -91,10 +91,10 @@ Add more constraints to overspecify the formula.
 ## Follower Invariant Motivation
 
 \centering
-\includegraphics[page=3, clip, trim=1.9cm 14.9cm 10.5cm 10.2cm, width=0.8\textwidth]{paper2}
+\includegraphics[page=3, clip, trim=1.9cm 14.9cm 10.5cm 10.2cm, width=\textwidth]{paper2}
 
 \centering
-\includegraphics[page=3, clip, trim=11.1cm 14.9cm 1.9cm 10.2cm, width=0.8\textwidth]{paper2}
+\includegraphics[page=3, clip, trim=11.1cm 14.9cm 1.9cm 10.2cm, width=\textwidth]{paper2}
 
 ## Follower Invariant
 
@@ -107,10 +107,10 @@ Add more constraints to overspecify the formula.
 ## Definition Set Invariant Motivation
 
 \centering
-\includegraphics[page=3, clip, trim=1.9cm 11.8cm 10.5cm 13.3cm, width=0.8\textwidth]{paper2}
+\includegraphics[page=3, clip, trim=1.9cm 11.8cm 10.5cm 13.3cm, width=\textwidth]{paper2}
 
 \centering
-\includegraphics[page=3, clip, trim=11.1cm 11.8cm 1.9cm 13.3cm, width=0.8\textwidth]{paper2}
+\includegraphics[page=3, clip, trim=11.1cm 11.8cm 1.9cm 13.3cm, width=\textwidth]{paper2}
 
 ## Definition Set Invariant
 
