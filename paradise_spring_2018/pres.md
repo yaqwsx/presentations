@@ -13,10 +13,13 @@ date: 12th March 2018
 
 ## Bounded Model Checking
 
-Basic idea of BMC:
+Basic idea of BMC for a system and a property $P$:
 
-- transition function of a system as SAT or SMT
-- property $P$
+- unroll the system up to $k$-step
+    - number of context switches
+    - number of loop iteration
+    - \...
+- transition function of the unrolled system as SAT or SMT
 - if $\phi\wedge\neg P$ is:
     - unsat, property holds up to $k$ steps
     - sat, property is violated
@@ -26,7 +29,7 @@ Basic idea of BMC:
 Observations:
 
 - satisfiability check is the bottle neck
-- solvers work best when formula in under- or over-specified
+- solvers work the best when formula is under- or over-specified
 
 ## Main Idea
 
@@ -40,6 +43,7 @@ Add more constraints to overspecify the formula.
 . . .
 
 - simply add them to the conjunction
+- the result might be underapproximation
 
 ## BMC Underapproximation
 
@@ -53,15 +57,16 @@ Add more constraints to overspecify the formula.
 
 . . .
 
-- capturing likely invariants:
-    - instrument a program
-    - run it multiple time
-    - collect data
-    - statistically choose good candidates
-- 3 types of invariants:
+- invariants for reads and writes (load/store):
     - LR invariants
     - follower invariants
     - DSet invariants
+
+- capturing likely invariants:
+    - instrument a program
+    - run it multiple times
+    - collect data
+    - statistically choose good candidates
 
 ## Local/Remote Invariant Motivation
 
