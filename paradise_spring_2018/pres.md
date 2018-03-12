@@ -13,14 +13,14 @@ date: 12th March 2018
 
 ## Bounded Model Checking
 
-Basic idea of BMC for a system and a property $P$:
+Basic idea of BMC for a system and a property $\phi$:
 
 - unroll the system up to $k$-step
     - number of context switches
     - number of loop iteration
     - \...
 - transition function of the unrolled system as SAT or SMT
-- if $\phi\wedge\neg P$ is:
+- if $\neg\phi\wedge P$ is:
     - unsat, property holds up to $k$ steps
     - sat, property is violated
 
@@ -136,8 +136,8 @@ Add more constraints to overspecify the formula.
 ## Implementation Challenges
 
 - monitored memory locations
-    - granularity (DeFuse: a byte)
-    - memory location (DeFuse: heap only)
+    - granularity (DefUse: a byte)
+    - memory location (DefUse: heap only)
 - external definitions
     - external functions might loose invariants (`memset`, `memcpy`)
     - add annotation
@@ -146,7 +146,7 @@ Add more constraints to overspecify the formula.
     - intercept deallocation
 - context sensitivity
     - small uninlined functions used by different threads
-- training nose
+- training noise
     - incorrect oraculum
 
 ## Results
