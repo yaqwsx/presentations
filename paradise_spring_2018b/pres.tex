@@ -18,9 +18,9 @@
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{backgrounds}
 
-\title[RoFi]{RoFi}
+\title[RoFI]{RoFI}
 \author{Jan Mrázek, Viktória Vozárová}
-\institute{Paradise}
+\institute{ParaDiSe}
 \date{21. 5. 2018}
 
 \begin{document}
@@ -79,7 +79,7 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}{RoFi aka pozemský replikátor}
+\begin{frame}{RoFI aka pozemský replikátor}
     \centering
     \includegraphics[width=\textwidth]{img/rofi2}
 
@@ -123,51 +123,51 @@
             \tikzstyle{os_node}=[hw_node, minimum width=1cm];
 
             % HW column
-            \node(hw_label) [] {RoFi HW};
+            \node(hw_label) [] {RoFI HW};
             \node(motors) [hw_node, below = of hw_label] {Servomotors};
             \node(mechanics) [hw_node, below = of motors] {Mechanics};
             \node(mcu) [hw_node, below = of mechanics] {Control unit};
             \node(power) [hw_node, below = of mcu] {Power mgt};
-            \node(rofi_hw) [hw_node, fit=(hw_label)(power), fill=none] {};
+            \node(RoFI_hw) [hw_node, fit=(hw_label)(power), fill=none] {};
             \scoped[on background layer]    {
-                \fill[black!15] (rofi_hw.south west) rectangle (rofi_hw.north east);
+                \fill[black!15] (RoFI_hw.south west) rectangle (RoFI_hw.north east);
             }
 
             % Simulator
-            \node(simulator)[hw_node, below = of rofi_hw, minimum width = 2.75cm] {Simulator};
+            \node(simulator)[hw_node, below = of RoFI_hw, minimum width = 2.75cm] {Simulator};
 
             % OS column
-            \node(os_label) [right = 1.1cm of hw_label] {RoFi OS};
+            \node(os_label) [right = 1.1cm of hw_label] {RoFI OS};
             \node(motion) [os_node, below left = 0.2cm and -0.7cm of os_label, minimum height = 2.8cm] {\rotatebox{90}{Motion control}};
             \node(os_dummy) [minimum width = 1cm, below = 0cm of motion] { };
             \node(communication) [os_node, below = of motion, minimum height = 2.8cm] {\rotatebox{90}{Communication}};
             \node(reconfiguration) [os_node, right = of os_dummy, minimum height = 5.8cm] {\rotatebox{90}{Reconfiguration and algorithms}};
-            \node(rofi_os) [os_node, fit=(os_label)(communication)(reconfiguration), fill=none] {};
+            \node(RoFI_os) [os_node, fit=(os_label)(communication)(reconfiguration), fill=none] {};
             \scoped[on background layer]    {
-                \fill[black!15] (rofi_os.south west) rectangle (rofi_os.north east);
+                \fill[black!15] (RoFI_os.south west) rectangle (RoFI_os.north east);
             }
 
             % Vertical line
-            \node(vline_c) [right = 0.2cm of rofi_os] {};
+            \node(vline_c) [right = 0.2cm of RoFI_os] {};
             \node(vline_a) [above = 3.5cm of vline_c] {};
             \node(vline_b) [below = 3.5cm of vline_c] {};
             \draw [dashed] (vline_a) -- (vline_b);
 
             % Future
             \tikzstyle{future}=[rectangle, draw, rounded corners, node distance=0.5cm, fill=white];
-            \node(neur) [future, right = 2cm of rofi_os] {NeuRoFi};
-            \node(cv) [future, below = of neur] {RoFiCV};
+            \node(neur) [future, right = 2cm of RoFI_os] {NeuRoFI};
+            \node(cv) [future, below = of neur] {RoFICV};
             \node(passive) [future, below = of cv] {Passive components};
-            \node(iorofi) [future, above = of neur] {IoRoFi};
-            \node(synth) [future, above = of iorofi] {Strategy synthesis};
+            \node(ioRoFI) [future, above = of neur] {IoRoFI};
+            \node(synth) [future, above = of ioRoFI] {Strategy synthesis};
             \node(etc) [node distance = 0.5cm, below = of passive] {\rotatebox{90}{...}};
 
             \tikzstyle{arrow}=[to path={-| (\tikztotarget)}, {Latex[length=3mm]}-];
-            \draw[arrow] (synth) edge (rofi_os.east);
-            \draw[arrow] (neur) edge (rofi_os.east);
-            \draw[arrow] (cv) edge (rofi_os.east);
-            \draw[arrow] (passive) edge (rofi_os.east);
-            \draw[arrow] (iorofi) edge (rofi_os.east);
+            \draw[arrow] (synth) edge (RoFI_os.east);
+            \draw[arrow] (neur) edge (RoFI_os.east);
+            \draw[arrow] (cv) edge (RoFI_os.east);
+            \draw[arrow] (passive) edge (RoFI_os.east);
+            \draw[arrow] (ioRoFI) edge (RoFI_os.east);
 
             % time
             \node(time_c) [below = 0.5cm of vline_b] {};
@@ -181,7 +181,7 @@
     }
 \end{frame}
 
-\section{Evoluce RoFi}
+\section{Evoluce RoFI}
 
 \begin{frame}{První koncept -- Kostičky}
     \centering
@@ -288,7 +288,7 @@
 
     \url{https://a360.co/2KFJ2Th}
 
-    Jsme (snad) pár týdnů od prvních pohybů a vývoj RoFiOS začíná.
+    Jsme (snad) pár týdnů od prvních pohybů a vývoj RoFIOS začíná.
 \end{frame}
 
 \section{O rekonfigurovatelnosti}
