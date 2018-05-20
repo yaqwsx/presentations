@@ -2,15 +2,20 @@
 
 \mode<presentation>
 {
-  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
-  \usecolortheme{default} % or try albatross, beaver, crane, ...
-  \usefonttheme{default}  % or try serif, structurebold, ...
+  \usetheme{metropolis}
+  \usecolortheme{default}
+  \usefonttheme{default}
   \setbeamertemplate{navigation symbols}{}
   \setbeamertemplate{caption}[numbered]
 }
 
-\usepackage[english]{babel}
+\usepackage[czech]{babel}
 \usepackage[utf8x]{inputenc}
+\usepackage{tikz}
+
+\usetikzlibrary{fit}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows.meta}
 
 \title[RoFi]{RoFi}
 \author{Jan Mrázek, Viktória Vozárová}
@@ -23,14 +28,14 @@
   \titlepage
 \end{frame}
 
-\section{Úvod}
-
 \begin{frame}{Co je naším cílem?}
 
     Vyvinout rekonfigurovatelnou distribuovanou robotickou platformu.
 
+    \pause
+
     \begin{center}
-    \includegraphics[width=0.7\textwidth]{img/replicator2}
+    \includegraphics[width=0.6\textwidth]{img/replicator2}
 
     ...v podstatě Replikátory z StarGate SG-1.
 
@@ -46,18 +51,29 @@
 
     \begin{columns}
         \begin{column}{0.5\textwidth}
+            Co si bereme jako inspiraci:
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \only<2->{Čemu se chceme vyvarovat:}
+        \end{column}
+    \end{columns}
+
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
             \begin{itemize}
-                \item robot
-                \item rekonfigurovatelný
-                \item distribuovaný
+                \item rekonfigurovatelnost
+                \item distribuovanost
+                \item fault tolerantnost
+                \item integrace s prostředím
             \end{itemize}
         \end{column}
         \begin{column}{0.5\textwidth}
-            \begin{itemize}
-                \item využívá prostředí
-                \item nepřátelský
-                \item snaží se ovládnout svět
-            \end{itemize}
+            \only<2->{
+                \begin{itemize}
+                    \item přílišná autonomnost
+                    \item snaha se ovládnout svět
+                \end{itemize}
+            }
         \end{column}
     \end{columns}
 \end{frame}
@@ -94,24 +110,67 @@
 
 \end{frame}
 
-\begin{frame}{V čem jsme jiní?}
-    \begin{itemize}
-        \item čistá teorie vs. aplikace na skutečném HW
-        \item symetričnost zamykání
-        \item únosnost zamykání
-        \item sdílený power managment
-        \item grid-awareness
-
-        \pause
-
-        \item nemáme v plánu to zabalit
-    \end{itemize}
-\end{frame}
-
 \begin{frame}{Vize projektu}
+    \centering
+    \resizebox {!} {7.5cm}
+    {
+        \begin{tikzpicture}
+            \tikzstyle{hw_node}=[rectangle, draw, minimum width=2.5cm, minimum height=1cm, node distance=0.2cm, align=center];
+            \tikzstyle{os_node}=[hw_node, minimum width=1cm];
+
+            % HW column
+            \node(hw_label) [] {RoFi HW};
+            \node(motors) [hw_node, below = of hw_label] {Servomotors};
+            \node(mechanics) [hw_node, below = of motors] {Mechanics};
+            \node(mcu) [hw_node, below = of mechanics] {Control unit};
+            \node(power) [hw_node, below = of mcu] {Power mgt};
+            \node(rofi_hw) [hw_node, fit=(hw_label)(power)] {};
+
+            % Simulator
+            \node(simulator)[hw_node, below = of rofi_hw, minimum width = 2.75cm] {Simulator};
+
+            % OS column
+            \node(os_label) [right = 1.1cm of hw_label] {RoFi OS};
+            \node(motion) [os_node, below left = 0.2cm and -0.7cm of os_label, minimum height = 2.8cm] {\rotatebox{90}{Motion control}};
+            \node(os_dummy) [minimum width = 1cm, below = 0cm of motion] { };
+            \node(communication) [os_node, below = of motion, minimum height = 2.8cm] {\rotatebox{90}{Communication}};
+            \node(reconfiguration) [os_node, right = of os_dummy, minimum height = 5.8cm] {\rotatebox{90}{Reconfiguration and algorithms}};
+            \node(rofi_os) [os_node, fit=(os_label)(communication)(reconfiguration)] {};
+
+            % Vertical line
+            \node(vline_c) [right = 0.2cm of rofi_os] {};
+            \node(vline_a) [above = 3.5cm of vline_c] {};
+            \node(vline_b) [below = 3.5cm of vline_c] {};
+            \draw [dashed] (vline_a) -- (vline_b);
+
+            % Future
+            \tikzstyle{future}=[rectangle, draw, rounded corners, node distance=0.5cm];
+            \node(neur) [future, right = 2cm of rofi_os] {NeuRoFi};
+            \node(cv) [future, below = of neur] {RoFiCV};
+            \node(passive) [future, below = of cv] {Passive components};
+            \node(iorofi) [future, above = of neur] {IoRoFi};
+            \node(synth) [future, above = of iorofi] {Strategy synthesis};
+            \node(etc) [node distance = 0.5cm, below = of passive] {\rotatebox{90}{...}};
+
+            \tikzstyle{arrow}=[to path={-| (\tikztotarget)}, {Latex[length=3mm]}-];
+            \draw[arrow] (synth) edge (rofi_os.east);
+            \draw[arrow] (neur) edge (rofi_os.east);
+            \draw[arrow] (cv) edge (rofi_os.east);
+            \draw[arrow] (passive) edge (rofi_os.east);
+            \draw[arrow] (iorofi) edge (rofi_os.east);
+
+            % time
+            \node(time_c) [below = 0.5cm of vline_b] {};
+            \node(time_begin) [left = 6.5cm of time_c] {};
+            \node(time_end) [right = 5cm of time_c] {};
+            \draw[arrow] (time_end) edge (time_begin);
+
+            \node(now) [above left = 0cm and 1.4cm of time_c] {Short term plans};
+            \node(vision) [above right = 0cm and 1.5cm of time_c] {Future/visions};
+        \end{tikzpicture}
+    }
 \end{frame}
 
-\begin{frame}{Aktuální postup}
-\end{frame}
+\section{Evoluce tvaru RoFi}
 
 \end{document}
