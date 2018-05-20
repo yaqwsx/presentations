@@ -16,6 +16,7 @@
 \usetikzlibrary{fit}
 \usetikzlibrary{positioning}
 \usetikzlibrary{arrows.meta}
+\usetikzlibrary{backgrounds}
 
 \title[RoFi]{RoFi}
 \author{Jan Mrázek, Viktória Vozárová}
@@ -115,7 +116,7 @@
     \resizebox {!} {7.5cm}
     {
         \begin{tikzpicture}
-            \tikzstyle{hw_node}=[rectangle, draw, minimum width=2.5cm, minimum height=1cm, node distance=0.2cm, align=center];
+            \tikzstyle{hw_node}=[rectangle, draw, minimum width=2.5cm, minimum height=1cm, node distance=0.2cm, align=center, fill = white];
             \tikzstyle{os_node}=[hw_node, minimum width=1cm];
 
             % HW column
@@ -124,7 +125,10 @@
             \node(mechanics) [hw_node, below = of motors] {Mechanics};
             \node(mcu) [hw_node, below = of mechanics] {Control unit};
             \node(power) [hw_node, below = of mcu] {Power mgt};
-            \node(rofi_hw) [hw_node, fit=(hw_label)(power)] {};
+            \node(rofi_hw) [hw_node, fit=(hw_label)(power), fill=none] {};
+            \scoped[on background layer]    {
+                \fill[black!15] (rofi_hw.south west) rectangle (rofi_hw.north east);
+            }
 
             % Simulator
             \node(simulator)[hw_node, below = of rofi_hw, minimum width = 2.75cm] {Simulator};
@@ -135,7 +139,10 @@
             \node(os_dummy) [minimum width = 1cm, below = 0cm of motion] { };
             \node(communication) [os_node, below = of motion, minimum height = 2.8cm] {\rotatebox{90}{Communication}};
             \node(reconfiguration) [os_node, right = of os_dummy, minimum height = 5.8cm] {\rotatebox{90}{Reconfiguration and algorithms}};
-            \node(rofi_os) [os_node, fit=(os_label)(communication)(reconfiguration)] {};
+            \node(rofi_os) [os_node, fit=(os_label)(communication)(reconfiguration), fill=none] {};
+            \scoped[on background layer]    {
+                \fill[black!15] (rofi_os.south west) rectangle (rofi_os.north east);
+            }
 
             % Vertical line
             \node(vline_c) [right = 0.2cm of rofi_os] {};
@@ -144,7 +151,7 @@
             \draw [dashed] (vline_a) -- (vline_b);
 
             % Future
-            \tikzstyle{future}=[rectangle, draw, rounded corners, node distance=0.5cm];
+            \tikzstyle{future}=[rectangle, draw, rounded corners, node distance=0.5cm, fill=white];
             \node(neur) [future, right = 2cm of rofi_os] {NeuRoFi};
             \node(cv) [future, below = of neur] {RoFiCV};
             \node(passive) [future, below = of cv] {Passive components};
