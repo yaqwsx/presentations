@@ -65,7 +65,7 @@
                 \item rekonfigurovatelnost
                 \item distribuovanost
                 \item fault tolerantnost
-                \item integrace s prostředím
+                \item integraci s prostředím
             \end{itemize}
         \end{column}
         \begin{column}{0.5\textwidth}
@@ -79,8 +79,10 @@
     \end{columns}
 \end{frame}
 
-\begin{frame}{RoFi}
-    \includegraphics[width=\textwidth]{img/rofi1}
+\begin{frame}{RoFi aka pozemský replikátor}
+    \centering
+    \includegraphics[width=\textwidth]{img/rofi2}
+    \url{https://a360.co/2KFIRaF}
 \end{frame}
 
 \begin{frame}{Jak unikátní jsme?}
@@ -88,7 +90,7 @@
     \only<2>{
         \begin{block}{MTRANS}
             \begin{figure}
-                \includegraphics[width=0.8\textwidth]{img/mtran1}
+                \includegraphics[width=0.7\textwidth]{img/mtran1}
             \end{figure}
         \end{block}
     }
@@ -178,6 +180,108 @@
     }
 \end{frame}
 
-\section{Evoluce tvaru RoFi}
+\section{Evoluce RoFi}
+
+\begin{frame}{První koncept -- Kostičky}
+    \centering
+    \includegraphics[width=0.85\textwidth]{img/cubes}
+    \url{https://a360.co/2KGdj4q}
+\end{frame}
+
+\begin{frame}{Druhý koncept}
+    \centering
+    \includegraphics[width=0.85\textwidth]{img/mtranszfi}
+    \url{https://a360.co/2k9dRVf}
+\end{frame}
+
+\begin{frame}{Zamykací systém -- základ rekonfigurovatelné platformy}
+    Požadované vlastnosti:
+    \begin{itemize}
+        \item mechanická odolnost
+        \item symetričnost (rotační \& pohlaví)
+        \item odolnost vůči nezarovnání
+        \item spotřeba energie
+        \item rychlost
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Možné zamykací systémy}
+    \centering
+    \only<1>{
+        \begin{block}{Háčky}
+            \begin{figure}
+                \includegraphics[width=0.7\textwidth]{img/mtran1}
+            \end{figure}
+        \end{block}
+    }
+    \only<2>{
+        \begin{block}{Permaelektrické magnety}
+            \begin{figure}
+                \includegraphics[width=0.85\textwidth]{img/smores1}
+            \end{figure}
+        \end{block}
+    }
+\end{frame}
+
+\begin{frame}{Šroubovací systém 1}
+    \centering
+    \includegraphics[width=\textwidth]{img/screw1}
+\end{frame}
+
+\begin{frame}{Šroubovací systém 2}
+    \centering
+    \includegraphics[width=\textwidth]{img/screw2}
+\end{frame}
+
+\begin{frame}{Háčkový systém}
+    \centering
+    \includegraphics[width=\textwidth]{img/clip1}
+\end{frame}
+
+\begin{frame}{Grid-awareness}
+    \begin{center}
+        \only<1>{\includegraphics[width=0.8\textwidth]{img/grid_aware_1}}
+
+        \only<2>{\includegraphics[width=0.8\textwidth]{img/grid_aware_2}}
+
+        \only<3>{\includegraphics[width=0.8\textwidth]{img/grid_aware_3}}
+
+        \only<4>{\includegraphics[width=0.8\textwidth]{img/grid_aware_4}}
+
+        \only<5>{\includegraphics[width=0.8\textwidth]{img/grid_aware_5}}
+
+        \only<6>{\includegraphics[width=0.8\textwidth]{img/grid_aware_6}}
+
+        \only<7>{\includegraphics[width=0.8\textwidth]{img/grid_aware_7}}
+
+        \only<8>{\includegraphics[width=0.8\textwidth]{img/grid_aware_8}}
+    \end{center}
+
+    \only<7->{Řešení: robot vepsaný do dvou koulí}
+
+    \only<8->{Problém: je třeba zamykat na dálku}
+\end{frame}
+
+\begin{frame}{Háčkový systém 2}
+    \centering
+    \includegraphics[width=\textwidth]{img/clip2}
+\end{frame}
+
+\begin{frame}{Háčkový systém 3}
+    \centering
+    \only<1>{\includegraphics[width=\textwidth]{img/higen1}}
+    \only<2>{\includegraphics[width=\textwidth]{img/higen2}}
+    \only<3>{\includegraphics[width=\textwidth]{img/higen3}}
+\end{frame}
+
+\begin{frame}{Aktuální stav}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\textwidth]{img/rofi3}
+    \end{figure}
+
+    Jsme (snad) pár týdnů od prvních pohybů a vývoj RoFiOS začíná.
+\end{frame}
 
 \end{document}
+
