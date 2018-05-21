@@ -36,11 +36,16 @@
     \pause
 
     \begin{center}
-    \includegraphics[width=0.6\textwidth]{img/replicator2}
+    \includegraphics[width=0.5\textwidth]{img/replicator2}
 
     ...v podstatě Replikátory z StarGate SG-1.
 
     \url{https://youtu.be/gm0KUVByx40?t=49}
+
+    \pause
+
+    ...prakticky \url{https://youtu.be/4oSavAHf0dg?t=164}.
+
     \end{center}
 
 \end{frame}
@@ -293,18 +298,18 @@
   \begin{tikzpicture}
     \node at (-4.5, 2.5) {{\Huge \texttt{B}}};
     \node at (4.5, -2.5) {{\Huge \texttt{A}}};
-    
+
     \node (init) at (0,0) {\includegraphics[scale=0.4]{img/init.png}};
 
     \node at (1.4, -0.5) {{\Large $\alpha$}};
-    \node at (-1.4,0.8) {{\Large $\beta$}};    
+    \node at (-1.4,0.8) {{\Large $\beta$}};
     \node at (0,0.1) {{\Large $\gamma$}};
-    
+
     \node at (3.5, -1.7) {\texttt{bot}};
     \node at (0.3, -2.5) {\texttt{left}};
     \node at (-2.5, -1.2) {\texttt{right}};
-    
-    
+
+
     \node at (-3.5, 1.7) {\texttt{bot}};
     \node at (-0.3, 2.5) {\texttt{left}};
     \node at (2.5, 1.2) {\texttt{right}};
@@ -315,7 +320,7 @@
 \begin{frame}{Rekonfigurácia}
 \begin{center}
   \hspace{-3em}
-  \begin{tikzpicture}  
+  \begin{tikzpicture}
     \visible<1-3>{\node (init) at (0,0) {\includegraphics[scale=0.2]{img/example0.png}};}
     \visible<2-3>{\node at (3.5,-2) {\includegraphics[scale=0.2]{img/example2.png}};
     \node (a) at (3.5, 0.2) {zmena otočení};}
@@ -327,25 +332,25 @@
 
 \begin{frame}{Príklad}
 
-  \textbf{Problém:} Vyjdi po schodoch. 
-  
+  \textbf{Problém:} Vyjdi po schodoch.
+
   \pause
-  
+
   \textbf{Riešenie: }
   \begin{enumerate}
     \item Vytvor spojenie na chodenie po schodoch.
     \item Vykonaj sekvenciu otočení na vyjdenie jedného schodu.
     \item Opakuj, kým nie si navrchu.
   \end{enumerate}
-  
+
   \pause
-  
+
   \textbf{Podproblém 1:}\\
   Prejdi zo \textbf{spojenia} a otočenia \textbf{do iného spojenia} a otočenia.
-  
-  \pause  
-  
-  \textbf{Podproblém 2:}\\  
+
+  \pause
+
+  \textbf{Podproblém 2:}\\
   Prejdi z \textbf{otočenia do iného otočenia} pri tom istom spojení.
 \end{frame}
 
@@ -353,24 +358,24 @@
   \hspace{0.5em}
   \begin{tikzpicture}
     \node (init) at (0,0) {\includegraphics[scale=0.13]{img/init.png}}; \pause
-    
+
     \node (a1) at (-4,1) {\includegraphics[scale=0.13]{img/init-next2.png}};
-    \path[->] (init) edge node[above] {$\alpha, \frac{\pi}{2}$}  (a1); \pause    
-    
+    \path[->] (init) edge node[above] {$\alpha, \frac{\pi}{2}$}  (a1); \pause
+
     \node (a0) at (-4,-1) {\includegraphics[scale=0.13]{img/init-next1.png}};
     \draw[->] (init) edge node[above] {$\alpha, -\frac{\pi}{2}$} (a0); \pause
-    
+
     \node (b0) at (-1.5,-3.5) {\includegraphics[scale=0.13]{img/init-next3.png}};
     \draw[->] (init) edge node[left] {$\beta, \frac{\pi}{2}$} (b0); \pause
-    
+
     \node (b1) at (1.5,-3.5) {\includegraphics[scale=0.13]{img/init-next4.png}};
     \draw[->] (init) edge node[right] {$\beta, -\frac{\pi}{2}$} (b1); \pause
-    
+
     \node (g0) at (4,-1) {\includegraphics[scale=0.13]{img/init-next5.png}};
     \draw[->] (init) edge node[above] {$\gamma, \frac{\pi}{2}$} (g0); \pause
-    
+
     \node (g1)at (4,1) {\includegraphics[scale=0.13]{img/init-next6.png}};
-    \draw[->] (init) edge node[above] {$\gamma, -\frac{\pi}{2}$} (g1); 
+    \draw[->] (init) edge node[above] {$\gamma, -\frac{\pi}{2}$} (g1);
   \end{tikzpicture}
 \end{frame}
 
@@ -379,7 +384,7 @@
 \begin{tikzpicture}
   \node (init) at (0,0) {\includegraphics[scale=0.3]{img/hard_init.png}};
   \node (goal) at (6,0) {\includegraphics[scale=0.3]{img/hard_goal.png}};
-  
+
   \draw[->] (1.5,0) -- (4.5,0);
 \end{tikzpicture}
 
@@ -415,7 +420,7 @@ Možné riešenia:
   \item BFS (duh...)
   \item A* (rôzne ohodnotenia stavov)
   \item Rapidly-exploring Random Tree
-  \item ...  
+  \item ...
 \end{itemize}
 
 \end{frame}
