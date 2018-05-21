@@ -138,10 +138,21 @@
             }
 
             % Simulator
-            \node(simulator)[hw_node, below = of RoFI_hw, minimum width = 2.75cm] {Simulator};
+            \node(simulator)[hw_node, below = of RoFI_hw, minimum width = 4.8cm, xshift=1.05cm] {Simulator};
+
+            % Modules
+            \tikzstyle{module_node}=[hw_node, minimum width=1cm, minimum height=1.4cm];
+            \node(module_label) [right = 0.8cm of hw_label] {Modules};
+            \node(basic)[module_node, below = of module_label] {\rotatebox{90}{Basic}};
+            \node(sensor)[module_node, below = of basic] {\rotatebox{90}{Sensor}};
+            \node(special)[module_node, below = of sensor] {\rotatebox{90}{Special}};
+            \node(RoFI_modules) [hw_node, fit=(module_label)(special), fill=none, minimum width = 1cm] {};
+            \scoped[on background layer]    {
+                \fill[black!15] (RoFI_modules.south west) rectangle (RoFI_modules.north east);
+            }
 
             % OS column
-            \node(os_label) [right = 1.1cm of hw_label] {RoFI OS};
+            \node(os_label) [right = 3.2cm of hw_label] {RoFI OS};
             \node(motion) [os_node, below left = 0.2cm and -0.7cm of os_label, minimum height = 2.8cm] {\rotatebox{90}{Motion control}};
             \node(os_dummy) [minimum width = 1cm, below = 0cm of motion] { };
             \node(communication) [os_node, below = of motion, minimum height = 2.8cm] {\rotatebox{90}{Communication}};
@@ -175,8 +186,8 @@
 
             % time
             \node(time_c) [below = 0.5cm of vline_b] {};
-            \node(time_begin) [left = 6.5cm of time_c] {};
-            \node(time_end) [right = 5cm of time_c] {};
+            \node(time_begin) [left = 7.5cm of time_c] {};
+            \node(time_end) [right = 4cm of time_c] {};
             \draw[arrow] (time_end) edge (time_begin);
 
             \node(now) [above left = 0cm and 1.4cm of time_c] {Short term plans};
