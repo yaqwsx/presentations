@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>RoFICoM &ndash; First Open-Hardware Connector for Metamorphic Robots</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/rofi.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<div class="title">
+					<h1>RoFICoM &ndash; First Open-Hardware Connector for Metamorphic Robots</h1>
+					<h2>Jan Mrázek, Jiří Barnat</h2>
+					<h3>Masaryk University, Czechia</h3>
+				</div>
+				<img src="assets/opvvv.jpg"
+					style="height: 200px; display: block; position:absolute; bottom: 0; right:0;">
+			</section>
+
+			<section>
+				<h1>I Want To Build a Robot</h1>
+				<div class="container">
+					<p>More specifically a metamorphic self-reconfigurable one.</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>I Want To Build a Robot</h1>
+				<div class="container">
+					<p>Good news! There are plenty of existing projects:</p>
+
+					<div style="text-align: center">
+						<div style="height: 500px; display: inline-block;">
+							<img src="assets/mtran.jpg" style="display: inline-block; height: 100%;">
+							<img src="assets/hymod.jpg" style="display: inline-block; height: 100%;">
+							<img src="assets/roombots.png" style="display: inline-block; height: 100%;">
+						</div>
+					</div>
+					<p>...however, you cannot buy them nor build them.</p>
+				</div>
+			</section>
+
+
+
+			<section>
+				<h1>RoFICoM &ndash; What Is It?</h1>
+				<div class="container">
+					<img style="width: 65%;" src="assets/connector_photo.jpg">
+				</div>
+			</section>
+
+
+
+			<section>
+				<h1>RoFICoM &ndash; What Does It Do?</h1>
+				<div class="container">
+					<div class="col-3">
+						<p>It connects robots:</p>
+						<ul>
+							<li><b>mechanically</b></li>
+							<li><b>communicatively</b></li>
+							<li><b>electrically</b></li>
+						</ul>
+					</div>
+					<div class="col-9">
+						<video width="1280" height="720" controls>
+							<source src="assets/RoFICoM.mp4" type="video/mp4">
+							Your browser does not support the video tag.
+						</video>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Why should I Use It?</h1>
+				<div class="container">
+					<div class="col-4">
+						<p>RoFICoM is</p>
+						<ul style="list-style: none;">
+							<li data-fragment-index="1" class="fragment highlight-current-bold">
+								versatile</li>
+							<li data-fragment-index="2" class="fragment highlight-current-bold">
+								adaptible</li>
+							<li data-fragment-index="3" class="fragment highlight-current-bold ">
+								encapsulated</li>
+							<li data-fragment-index="4" class="fragment highlight-current-bold">
+								available</li>
+						</ul>
+					</div>
+					<div class="col-8">
+						<div data-fragment-index="1" class="fragment current-visible">
+							<p><b>Fits many use cases.</b></p>
+							<ul>
+								<li>flat & compact</li>
+								<li>genderless & grid-aware connection</li>
+								<li>no power required for sustaining the connection</li>
+								<li>support for passive counterparts</li>
+							</ul>
+							<img src="assets/grid_aware.svg" style="width: 800px;">
+						</div>
+						<div data-fragment-index="2" class="fragment current-visible">
+							<p><b>Arbitrary binary packets can be exchanged.</b></p>
+							<ul>
+								<li>support for practically any packet-based procol</li>
+								<li>TCP/IP as the main communication protocol</li>
+								<li>simple protocols possible for simple peripherals</li>
+							</ul>
+							<br>
+							<p><b>Parametric model</b></p>
+							<ul>
+								<li>custom diameter or</li>
+								<li>retract distance can be generated</li>
+							</ul>
+						</div>
+						<div data-fragment-index="3" class="fragment current-visible">
+							<p><b>Easy to integrate, drop-in upgrades.</b></p>
+							<ul>
+								<li>fixed mounting holes</li>
+								<li>electrical connection via pogo pins</li>
+								<li>stand-alone device accessible via an SPI bus</li>
+							</ul>
+							<img src="assets/mounting_holes.svg" style="width: 900px;">
+						</div>
+						<div data-fragment-index="4" class="fragment current-visible">
+							<p><b>Existing solutions are not commonly available</b></p>
+							<p>You can read a paper, but you cannot buy them or download blueprints.</p>
+
+							<p><b>RoFICoM is Open-Hardware</b></p>
+							<ul>
+								<li>optimized for 3D printing/polyurethane molding</li>
+								<li>(relatively) easy to build</li>
+								<li>no special components</li>
+							</ul>
+							<div class="center" style="margin-top: 100px;">
+								Blueprints, sources and assembly guide available at:</br>
+								<a href="https://rofibots.com/connector/">https://rofibots.com/connector/</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+			<section>
+				<h1>What Is Inside?</h1>
+				<div class="container">
+					<div class="col-7"><img src="assets/components.svg" style="width: 80%;"></div>
+					<div class="col-5"><img src="assets/control_board.jpg" style="width: 100%;"></div>
+				</div>
+			</section>
+
+			<section>
+				<h1>RoFICoM Is Part of The RoFI Platform</h1>
+				<div class="container">
+					<img src="assets/header.jpg">
+				</div>
+			</section>
+
+			<section>
+				<h1>Summary</h1>
+				<div class="container">
+					<div class="col-7">
+						<p><b>RoFICoM is the connector you have dreamt of!</b></p>
+						<ul>
+							<li>feature-wise comparable to existing solutions</li>
+							<li>easy to use</li>
+							<li>compact</li>
+							<li><b>can be obtained</b></li>
+						</ul>
+
+						<div class="fragment center" style="margin-top: 100px;">
+							Thank you!</br>
+							<a href="https://rofibots.com">https://rofibots.com</a>
+						</div>
+					</div>
+					<div class="col-5">
+						<img src="assets/conn.jpg">
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			width: 1920,
+			height: 1080,
+			margin: 0,
+			center: false,
+			progress: true,
+			history: true,
+			controls: false,
+			transition: "none",
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>
