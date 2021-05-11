@@ -1,0 +1,170 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>RoFI &ndash; Distributed Metamorphic Robots</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/rofi.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<div class="title">
+					<h1 style="font-size: 78px;">RoFI &ndash; progress report</h1>
+					<h2>Jan Mrázek</h2>
+					<h3>11. 2. 2020</h3>
+				</div>
+			</section>
+
+			<section>
+				<h1>RoFI &ndash; Progress on Physical Robots</h1>
+				<div class="container">
+					<div style="text-align: center;">
+						<div style="height: 800px; display: inline-block;">
+							<img data-fragment-index="1" class="fragment current-visible" style="height: 100%;"
+								src="assets/um_persp.jpg">
+							<img data-fragment-index="2" class="fragment current-visible" style="height: 100%;"
+								src="assets/um_on_passive.jpg">
+							<img data-fragment-index="3" class="fragment current-visible" style="height: 100%;"
+								src="assets/um_hanging.jpg">
+							<video height="100%" controls data-fragment-index="4" class="fragment current-visible">
+								<source src="assets/video.mp4" type="video/mp4">
+								Your browser does not support the video tag.
+							</video>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>RoFI Reconfiguration</h1>
+				<div class="container">
+					<video height="900px" controls>
+						<source src="assets/refact.mp4" type="video/mp4">
+						Your browser does not support the video tag.
+					</video>
+				</div>
+			</section>
+
+			<section>
+				<h1>Simulation</h1>
+				<div class="container">
+					<p><ul>
+						<li>RoFI is integrated with Gazebo simulator (presented last time)</li>
+						<li>There is a need for a less precise simulator</li>
+						<li>A team of bachelor students developing such simulator</li>
+						</ul></p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Power Management</h1>
+				<div class="container">
+					<p><ul>
+					<li>Each robot has a battery</li>
+					<li>The robots can share power</li>
+					<li><b>What is the optimal strategy for power sharing?</b>
+						<ul>
+							<li>What is the goal? E.g., survive as long as possible</li>
+							<li>When does it make sense to "save" module and when to drop it?</li>
+						</ul>
+					</li>
+					</ul></p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Fault-tolerant control</h1>
+				<div class="container">
+					<div class="row">
+						<div class="col-6">
+							<ul>
+								<li>How to roll in this cofiguration?</li>
+								<li>What if one of the modules fails?<ul>
+									<li>Motor failure</li>
+									<li>Sensor failure</li>
+								</ul></li>
+							</ul>
+						</div>
+						<div class="col-6">
+							<img src="assets/ring_example.svg" style="margin-left: auto; margin-right: auto; height: 720px;">
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Publications</h1>
+				<div class="container">
+					<p>
+						<ul>
+							<li>RoFI – Open-Hardware Platform of Distributed Metamorphic Robots
+								<ul>
+									<li>ICRA 2021 (core B)</li>
+									<li>submitted, waiting for review</li>
+								</ul>
+							</li>
+							<li>Reconfiguring RoFI
+								<ul>
+									<li>RSS 2021 (core A*)</li>
+									<li>in preparation</li>
+								</ul>
+							</li>
+							<li>RoFI Inter-module Communication
+								<ul>
+									<li>IROS 2021 (core A)</li>
+									<li>in preparation</li>
+								</ul>
+							</li>
+						</ul>
+					</p>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			width: 1920,
+			height: 1080,
+			margin: 0,
+			center: false,
+			progress: true,
+			history: true,
+			controls: false,
+			transition: "none",
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>

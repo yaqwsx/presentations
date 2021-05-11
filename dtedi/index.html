@@ -1,0 +1,393 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>RoFI &ndash; Distributed Metamorphic Robots</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/rofi.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<div class="title">
+					<h1 style="font-size: 78px;">RoFI &ndash; Distributed Metamorphic Robots</h1>
+					<h2>Jan Mrázek</h2>
+					<h3>DTEDI, April 16, 2020</h3>
+				</div>
+			</section>
+
+			<section>
+				<h1>Robots &amp; Automatization</h1>
+				<div class="container">
+					<p>Today's society is built on robots &amp; automatization.</p>
+					<div style="text-align: center;">
+						<div style="height: 430px; display: inline-block;">
+							<img style="display: inline-block; height: 100%;"
+								src="https://miro.medium.com/max/1400/1*C9yymNOCmMDx7QuDBP-J4A.jpeg">
+							<img style="display: inline-block; height: 100%;"
+								src="https://www.svethardware.cz/recenze-xiaomi-mi-robot-vacuum-cleaner-oblibeny-pomocnik-do-domacnosti/50716/img/xiaomi-robot-vacuum-cleaner-5.jpg">
+						</div>
+					</div>
+					<div class="fragment" data-fragment-index="1">
+						<p>However, robots we use are:
+							<ul>
+								<li>dumb (follow prescribed instructions),</li>
+								<li class="fragment highlight-current-bold" data-fragment-index="2">tedious to design and manufacture,</li>
+								<li class="fragment highlight-current-bold" data-fragment-index="2">usually hand-crafted for single task, cannot be repurposed.</li>
+								<ul>
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Solution: Modular Robotics</h1>
+				<div class="container">
+					<div class="row" style="text-align: center;">
+						More universal, less effort, more emergent behavior
+						<div class="arrow" style=" width:1500px; margin:0px auto;">
+							<div class="line"
+								style="margin-top:14px; width:1470px;background: gray; height:10px; float:left;"></div>
+							<div class="point"
+								style="width: 0; height: 0; border-top: 20px solid transparent; border-bottom: 20px solid transparent; border-left: 30px solid gray; float:right;">
+							</div>
+						</div>
+					</div>
+					<div class="col-3 fragment">
+						<p style="text-align: center; height: 120px;">
+							<b>Hand-crafted robots</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							&nbsp;
+						</p>
+						<img
+							src="https://cdn.vox-cdn.com/thumbor/ArKnzhs30VwUNpgNJOpAugEi2JI=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/19770075/pia23491.jpg">
+					</div>
+					<div class="col-3 fragment">
+						<p style="text-align: center; height: 120px;">
+							<b>Modular robots</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							organs
+						</p>
+						<img
+							src="http://www.shgongboshi.com/photo/ps24578598-handling_kuka_robot_arm_kr_210_r2700_extra_floor_mount_position_waterproof.jpg">
+					</div>
+					<div class="col-3 fragment">
+						<p style="text-align: center; height: 120px;">
+							<b>Metamorphic robots</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							cells
+						</p>
+						<img style="" src="assets/metamorphic.jpg">
+					</div>
+					<div class="col-3 fragment">
+						<p style="text-align: center; height: 120px;">
+							<b>Smart matter</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							atoms
+						</p>
+						<img style="" src="assets/smartMatter.jpg">
+					</div>
+				</div>
+			</section>
+
+			<!-- <section>
+				<h1>Modular Robots</h1>
+				<div class="container">
+					<p>Current state: reusable pices with given interface &ndash; modules.</p>
+					<div style="width: 100%; overflow: auto;">
+						<div style="text-align: center; width: 60%; float: left;">
+							<div style="height: 400px; display: inline-block;">
+								<img style="display: inline-block; height: 100%;"
+									src="https://5.imimg.com/data5/RS/MS/MY-51859268/delta-ac-motor-drive-inverter-500x500.jpg">
+								<img style="display: inline-block; height: 100%;"
+									src="https://cdn3.volusion.com/abccm.ugtmf/v/vspfiles/photos/S20-2.jpg?v-cache=1575453459">
+							</div>
+						</div>
+						<div style="">
+							<ul>
+								<li>actuators</li>
+								<li>drivers</li>
+								<li>sensors</li>
+							</ul>
+							<p><b>People have to design them and assemble them by hand.</b></p>
+						</div>
+					</div>
+					<div class="fragment">
+						<p>Mind shift: just specify task and let the robot build itself.</p>
+						<p>Modules = individual robots &rarr; "robots out of robots".</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Smart/Programmable Matter</h1>
+				<div class="container">
+					<p>What if we make the modules really tiny?</p>
+					<img style="" src="https://pbs.twimg.com/media/CNjnZnAWwAA45-R?format=jpg&name=medium">
+					<p>These ideas are rather utopia considering state-of-the-art</p>
+				</div>
+			</section> -->
+
+			<section>
+				<h1>Why Metamorphic Over Modular?</h1>
+				<div class="container">
+					<div style="width: 60%; float: left">
+						<p>
+							<b>Built-in self-assembly</b>
+						</p>
+						<p>
+							<b>Extreme versatility</b>
+							<ul>
+								<li><span class="fragment strike" data-fragment-index="1">rescue missions</span></li>
+								<li><span class="fragment strike" data-fragment-index="1">space exploration</span></li>
+								<li>rapid prototyping without effort</li>
+							</ul>
+						</p>
+						<p>
+							<b>Fault-tolerance</b>
+							<ul>
+								<li>malfunction of a single unit does not
+									automatically fail the whole system</li>
+								<li>uniform components = easy replacement</li>
+							</ul>
+						</p>
+					</div>
+					<div style="width: 40%; float: right;">
+						<img style="width: 60%; height: auto;" class="fragment" data-fragment-index="1"
+							src="https://imgs.xkcd.com/comics/new_robot.png">
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>What Is The Goal?</h1>
+				<div class="container">
+					<img style="height: 700px;" src="https://www.gateworld.net/wiki/images/b/bd/Replicators.jpg">
+					<p style="text-align: center;">...basically replicators from Star Gate: SG-1</p>
+				</div>
+			</section>
+
+			<section>
+				<h1 class="fragment hide" data-fragment-index="1">Challenges of Metamorphic Robots</h1>
+				<h1 class="fragment show" data-fragment-index="1">Goal of My PhD Study</h1>
+				<div class="container">
+					<div class="col-9">
+						<p>
+							<b>Hardware challenges</b>
+							<ul>
+								<li>module design &amp; miniaturization</li>
+								<li>power source</li>
+								<li>bringing cost down &amp; mass-production</li>
+							</ul>
+							</li>
+						</p>
+						<p>
+							<b>Challenges of the distributed nature</b>
+							<ul>
+								<li class="fragment highlight-red" data-fragment-index="1">massive communication in unstable topology</li>
+								<li class="fragment highlight-red" data-fragment-index="1">computationally weak modules</li>
+								<li class="fragment highlight-red" data-fragment-index="1">task distribution &amp; cooperation on task solving</li>
+							</ul>
+						</p>
+						<p>
+							<b>Algorithmic challenges</b>
+							<ul>
+								<li class="fragment highlight-red" data-fragment-index="1">self-assembly &amp; reconfiguration</li>
+								<li>task specification &amp task formalization ("Bring me a coffee")</li>
+							</ul>
+						</p>
+					</div>
+					<div class="col-3 fragment show" data-fragment-index="1">
+						<p style="font-size: 60px; text-align: center; margin-top: 200px;">"Be ready when the hardware guys finish their job."
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>I Want To Validate My Research</h1>
+				<div class="container fragment">
+					<p>Good news! There are plenty of existing projects:</p>
+
+					<div style="text-align: center">
+						<div style="height: 450px; display: inline-block;">
+							<img src="assets/mtran.jpg" style="display: inline-block; height: 100%;">
+							<img src="assets/hymod.jpg" style="display: inline-block; height: 100%;">
+							<img src="assets/atron.jpg" style="display: inline-block; height: 100%;">
+						</div>
+					</div>
+					<p>...however, you cannot buy them nor build them.</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Additional PhD Goal</h1>
+				<div class="container">
+					<img style="height: 650px" src="assets/header.jpg">
+					<p>
+						<ul>
+							<li>develop a robotic platform for result validation</li>
+							<li>make it open & well-supported so the community can benefit from it</li>
+						</ul>
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>RoFICoM &ndash; What Is It?</h1>
+				<div class="container">
+					<div style="overflow: auto">
+						<div class="col-8">
+							<img style="height: 700px" src="assets/connector_photo.jpg">
+						</div>
+						<div class="col-4">
+							<p>It connects robots:</p>
+							<ul>
+								<li><b>mechanically</b></li>
+								<li><b>communicatively</b></li>
+								<li><b>electrically</b></li>
+							</ul>
+							<p>Designed so it can be easily manufactured.</p>
+						</div>
+					</div>
+					<p style="text-align: center;">Published at IROS 2019</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Universal Module</h1>
+				<div class="container">
+					<img src="assets/um_persp.jpg" style="width: 100%;">
+				</div>
+			</section>
+
+			<section>
+				<h1>RoFIBots</h1>
+				<div class="container">
+					<div class="col-6">
+						<img src="assets/spider_example.svg" style="width: 90%;">
+					</div>
+					<div class="col-6">
+						<img src="assets/ring_example.svg" style="width: 90%;">
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Current Progress On the PhD Topic</h1>
+				<div class="container">
+					<b>Robotic platform for validation of proposed solutions:</b>
+					<div style="overflow: auto">
+						<ul class="col-5">
+							<li>✓ First prototypes</li>
+							<li>✓ Design of software architecture</li>
+						</ul>
+						<div class="col-1">&nbsp;</div>
+						<ul class="col-5">
+							<li>🚧 Core functionality</li>
+							<li>🚧 Relevant tooling</li>
+							<li>🚧 Community propagation</li>
+						</ul>
+					</div>
+
+					<b>Distributed control:</b>
+					<div style="overflow: auto">
+						<ul class="col-5">
+							<li>✓ Design of intermodule communication</li>
+							<li>🚧 Basic implementation</li>
+						</ul>
+						<div class="col-1">&nbsp;</div>
+						<ul class="col-5">
+							<li>✖ Distributed control</li>
+							<li>✖ Real-time coordination</li>
+							<li>✖ Implementation &amp; validation</li>
+						</ul>
+					</div>
+
+					<b>Reconfiguration:</b>
+					<div style="overflow: auto">
+						<ul class="col-5">
+							<li>✓ Initial research of existing solutions</li>
+							<li>✓ Baseline of naive approaches</li>
+						</ul>
+						<div class="col-1">&nbsp;</div>
+						<ul class="col-5">
+							<li>🚧 Reconfiguration to a chain</li>
+							<li>✖ Custom algorithms</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<!-- <section>
+				<h1>Summary</h1>
+				<div class="container">
+					<div class="col-7">
+						<ul>
+							<li>feature-wise comparable to existing solutions</li>
+							<li>easy to use</li>
+							<li>compact</li>
+							<li><b>can be obtained</b></li>
+						</ul>
+
+						<div class="fragment center" style="margin-top: 100px;">
+							Thank you!</br>
+							<a href="https://rofibots.com">https://rofibots.com</a>
+						</div>
+					</div>
+					<div class="col-5">
+						<img src="assets/conn.jpg">
+					</div>
+				</div>
+			</section> -->
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			width: 1920,
+			height: 1080,
+			margin: 0,
+			center: false,
+			progress: true,
+			history: true,
+			controls: false,
+			transition: "none",
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>

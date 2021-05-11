@@ -1,0 +1,35 @@
+\frametitle{Závěr}
+\protect\hypertarget{zuxe1vux11br}{}
+
+\begin{itemize}
+\tightlist
+\item
+  v rámci projektu jsme úspěšně:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    udělali DiOS konfigurovatelným
+  \item
+    implementovali fair scheduler
+  \item
+    přidali do DiOSu podporu pro synchronní systémy
+  \item
+    přidali podporu pro POSIXové procesy
+  \item
+    zpříjemnili uživatelský zážitek
+  \end{itemize}
+\item
+  nad rámec projektu jsme:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    téměř zdvojnásobili sadu regresních testů pro DIVINE 4 (na 1200)
+  \end{itemize}
+\item
+  výstupy začleněny do hlavní vývojové větve DIVINE
+\end{itemize}
+
+Projekt k nalezení na \texttt{https://divine.fi.muni.cz}.
+
