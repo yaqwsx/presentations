@@ -1,0 +1,410 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>RoFI &ndash; Distributed Metamorphic Robots</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/rofi.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<div class="title">
+					<h1 style="font-size: 78px;">Fault-tolerance for Metamorphic Robots</h1>
+					<h2>Jan Mrázek</h2>
+					<h3>January 28, 2021</h3>
+				</div>
+			</section>
+
+			<section>
+				<h1>Robots &amp; Automation</h1>
+				<div class="container">
+					<p>Today's society is built on robots &amp; automation.</p>
+					<div style="text-align: center;">
+						<div style="height: 400px; display: inline-block;">
+							<img style="display: inline-block; height: 100%;"
+								src="https://miro.medium.com/max/1400/1*C9yymNOCmMDx7QuDBP-J4A.jpeg">
+							<img style="display: inline-block; height: 100%;"
+								src="https://www.svethardware.cz/recenze-xiaomi-mi-robot-vacuum-cleaner-oblibeny-pomocnik-do-domacnosti/50716/img/xiaomi-robot-vacuum-cleaner-5.jpg">
+						</div>
+					</div>
+					<div class="fragment" data-fragment-index="1">
+						<p>They make things cheap, but making them is expensive:
+							<ul>
+								<li>tedious to design and manufacture,</li>
+								<li>usually hand-crafted for single task, cannot be repurposed.</li>
+							<ul>
+						</p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Solution: Modular Robotics</h1>
+				<div class="container">
+					<div class="col-4">
+						<p style="text-align: center; height: 60px;">
+							<b>Modular robots</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							organs
+						</p>
+						<img
+							src="http://www.shgongboshi.com/photo/ps24578598-handling_kuka_robot_arm_kr_210_r2700_extra_floor_mount_position_waterproof.jpg">
+					</div>
+					<div class="col-4 fragment" style="text-align: center;" data-fragment-index="1">
+						<br><br><br><br>
+						Universal
+						<div class="arrow" style="width:100%; margin:0px auto; padding-left: 30px; padding-right: 30px;">
+							<div class="line"
+								style="display: inline; margin-top:14px; width:80%;background: gray; height:10px; float:left;"></div>
+							<div class="point"
+								style="display: inline; width: 0; height: 0; border-top: 20px solid transparent; border-bottom: 20px solid transparent; border-left: 30px solid gray; float:left;">
+							</div>
+						</div>
+						"Robots as a software"
+					</div>
+					<div class="col-4 fragment" data-fragment-index="1">
+						<p style="text-align: center; height: 60px;">
+							<b>Metamorphic robots</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							cells
+						</p>
+						<img style="" src="assets/metamorphic.jpg">
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1 class="fragment hide" data-fragment-index="1">Challenges of Metamorphic Robots</h1>
+				<h1 class="fragment show" data-fragment-index="1">Area of My PhD Study</h1>
+				<div class="container">
+					<div class="col-8">
+						<p>
+							<b>Hardware challenges</b>
+							<ul>
+								<li>module design &amp; miniaturization</li>
+								<li>bringing cost down &amp; mass-production</li>
+							</ul>
+							</li>
+						</p>
+						<p>
+							<b>Challenges of the distributed nature</b>
+							<ul>
+								<li class="fragment highlight-red" data-fragment-index="1">massive communication in unstable topology</li>
+								<li class="fragment highlight-red" data-fragment-index="1">computationally weak modules</li>
+								<li class="fragment highlight-red" data-fragment-index="1">fault-tolerance of the control mechanism</li>
+							</ul>
+						</p>
+						<p>
+							<b>Algorithmic challenges</b>
+							<ul>
+								<li>self-assembly &amp; reconfiguration</li>
+								<li>task specification &amp task formalization</li>
+							</ul>
+						</p>
+					</div>
+					<div class="col-4 fragment show" data-fragment-index="1">
+						<p style="font-size: 60px; text-align: center; margin-top: 200px;">"Be ready when the hardware guys finish their job."
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>The Goals</h1>
+				<div class="container">
+					<p><b>How to design controllers that...</b></p>
+					<ul>
+						<li>can recover from partial module malfunction?</li>
+						<li>can overcome faulty readings from sensors?</li>
+						<li>(possibly) are tolerant for malicious modules?</li>
+					</ul>
+
+					<div class="fragment">
+						<p><b>Propose algorithms &amp; design techniques for controllers</b></p>
+						<ul>
+							<li>leverage distributed nature of the system (no single point of failure)</li>
+							<li>propose suitable communication schemes and protocols</li>
+						</ul>
+					</div>
+
+					<div class="fragment">
+						<p><b>Validate such controllers, show that they work in the physical systems</b></p>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>I Want To Validate My Research</h1>
+				<div class="container fragment">
+					<p>Good news! There are plenty of existing projects:</p>
+
+					<div style="text-align: center">
+						<div style="height: 450px; display: inline-block;">
+							<img src="assets/mtran.jpg" style="display: inline-block; height: 100%;">
+							<img src="assets/hymod.jpg" style="display: inline-block; height: 100%;">
+							<img src="assets/atron.jpg" style="display: inline-block; height: 100%;">
+						</div>
+					</div>
+					<p>...however, you cannot buy them nor build them.</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Additional Goal</h1>
+				<div class="container">
+					<img style="height: 650px" src="assets/header.jpg">
+					<p>
+						<ul>
+							<li>develop a robotic platform for result validation</li>
+							<li>make it open & well-supported so the community can benefit from it</li>
+						</ul>
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Achieved results: RoFI Platform</h1>
+				<div class="container">
+					<div class="col-5">
+						<div style="width: 100%;">&nbsp;</div>
+						<img class="fragment current-visible" style="width: 100%" src="assets/um_hanging.jpg">
+						<img class="fragment current-visible" style="width: 100%" src="assets/connector_photo.jpg">
+						<img class="fragment current-visible" style="width: 100%" src="assets/grid_aware.svg">
+						<img class="fragment current-visible" style="width: 100%" src="assets/rofi_shapes.svg">
+						<img class="fragment current-visible" style="width: 100%" src="assets/gazebosim.png">
+					</div>
+					<div class="col-7">
+						<ul style="padding-left: 30px;">
+							<li>our open-platform for metamorphic robots</li>
+							<li>practically state-of-the-art in "one package"
+								<ul>
+									<li>reusable connector &ndash; RoFICoM</li>
+									<li>unique shape to allow for easy
+									reconfiguration &amp; reasoning about RoFIBots</li>
+									<li>a set of rules to define modules' shape</li>
+								</ul>
+							</li>
+							<li>designed for research purposes
+								<ul>
+									<li>easily programmable</li>
+									<li>ecosystem of tools</li>
+								</ul>
+							</li>
+							<li>
+								the first fully open design
+							</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Reconfiguration via reduction to SMT</h1>
+				<div class="container">
+					<p><b>How to find a reconfiguration plan?</b> Traditional approaches:</p>
+					<ul>
+						<li>state-space exploration (A*, RRT)</li>
+						<li>disconnect & reconnect</li>
+						<li>motion-primitives</li>
+						<li>...</li>
+					</ul>
+					<p>Inspired by software verification: reduce the problem to SMT</p>
+					<ul>
+						<li>build a first order logic formula that is
+						satisfiable iff there is a reconfiguration path</li>
+						<li>pass it SMT solver (leverage its heuristics)</li>
+						<li>extract solution</li>
+					</ul>
+					<p>Works for small configuration, shows potential with newer
+					version of solvers</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Next steps: roller case-study</h1>
+				<div class="container">
+					<div class="col-6">
+						<img src="assets/ring_example.svg" style="width: 90%;">
+					</div>
+					<div class="col-6">
+						<p><b>How to move in such configuration?</b></p>
+						<p><b>How to handle modules malfunctions?</b></p>
+						<ul>
+							<li>replicate results of current state-of-the-art on RoFI</li>
+							<li>model potential failures of the system</li>
+							<li>transform the controller to distributed one</li>
+						<ul>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Next steps: walker case-study</h1>
+				<div class="container">
+					<div class="col-6">
+						<img src="assets/spider_example.svg" style="width: 90%;">
+					</div>
+					<div class="col-6">
+						<p><b>Apply findings from previous case study</b></p>
+						<ul>
+							<li>generalize findings</li>
+							<li>propose general approaches to fault-tolerant control</li>
+						<ul>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Summary</h1>
+				<div class="container">
+					<p><b>Metamorphic robots could be revolution in
+					robotics.</b> But we are not there yet.</p>
+					<div class="fragment">
+					<p>What we focus on:</p>
+						<ul>
+							<li>distributed control of such robots</li>
+							<li>fault-tolerance of such robots</li>
+						</ul>
+						<p>What we already did:</p>
+						<ul>
+							<li>explore the area of modular robots, find suitable subarea</li>
+							<li>experimented with unconventional approach to reconfiguration</li>
+							<li>presented suitable platform</li>
+						</ul>
+						<p>What remains to be done:</p>
+						<ul>
+							<li>perform case-studies on distributed control</li>
+							<li>propose algorithms &amp design techniques</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Questions</h1>
+				<div class="container">
+					<p><b>Je možné v případě řešešení fatální poruchy (např. napájení motorů, přerušení komunikace) při spojených dvou modulech RoFI jednoho z nich odpojit jednostranně na RoFICoM?</b></p>
+					<p>Ano, je to možné. Je to jedna z předností našeho designu konektoru:
+						<ul>
+							<li>Pro spojení musí obě strany souhlasit (změnit pozici na "spojeno")</li>
+							<li>Pro spojení není vyžadována časová synchronizace</li>
+							<li>Libovolná strana může spojení ukončit bez participace protistrany</li>
+						</ul>
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Questions</h1>
+				<div class="container">
+					<p><b>V práci uvádíte, že se hodláte zaměřit na distribuované řízení a vyhnout se otázkám spojeným s rekonfigurací robota. Jaké druhy selhání je možné řešit touto cestou?</b></p>
+					<p>Celý systém RoFI je navržen tak, aby mohl interagovat s
+					pasivními prvky. Tedy i kompletně mrtvý modul, který je již
+					zapojen do systému lze používat, avšak:
+						<ul>
+							<li>nemusí umožňovat pohyb</li>
+							<li>reportuje falešná data</li>
+							<li>nepřenáší komunikaci</li>
+						</ul>
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Questions</h1>
+				<div class="container">
+					<p><b>Důležitou otázkou pro řízení systémů při poruše je co nejpřesnější identifikace poruchy a jejího dopadu na systém. Předpokládáte nějaké postupy pro diagnostiku systému a nastalého nebo blížicího se selhání?</b></p>
+					<p><ul>
+						<li>Do určité míry se RoFI moduly umí
+						sebe-diagnostikovat (např. funkčnost motorů), pokud je
+						třeba;</li>
+						<li>avšak ne vždy dává smysl identifikovat konkrétní
+						selhání a přímo je řešit – např. protokoly založené na
+						digitálních hormonech to nevyžadují a tolerantnost vůči chybám mají "v sobě zabudovanou".</li>
+					</ul></p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Questions</h1>
+				<div class="container">
+					<p><b>V případě selhání senzorů s enabízí možnost redundance
+					pomocí virtuálních sezorů. Je takový přístup možná v případě
+					modulárního robota?</b></p>
+					<p>Myslím si, že tento přístup je možný. Je jen kompikovanější kvůli distribuovanému prostředí.</p>
+					<p><b>Předpokládáte jeho využít?</b></p>
+					<p>Zatím jsem o něm neuvažoval jako o primární metodě.</p>
+				</div>
+			</section>
+
+			<!-- <section>
+				<h1>Summary</h1>
+				<div class="container">
+					<div class="col-7">
+						<ul>
+							<li>feature-wise comparable to existing solutions</li>
+							<li>easy to use</li>
+							<li>compact</li>
+							<li><b>can be obtained</b></li>
+						</ul>
+
+						<div class="fragment center" style="margin-top: 100px;">
+							Thank you!</br>
+							<a href="https://rofibots.com">https://rofibots.com</a>
+						</div>
+					</div>
+					<div class="col-5">
+						<img src="assets/conn.jpg">
+					</div>
+				</div>
+			</section> -->
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			width: 1920,
+			height: 1080,
+			margin: 0,
+			center: false,
+			progress: true,
+			history: true,
+			controls: false,
+			transition: "none",
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+\begin{Verbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8}]
+\PYG{k+kt}{void}\PYG{o}{*} \PYG{n+nf}{t1}\PYG{p}{(}\PYG{p}{)} \PYG{p}{\PYGZob{}}
+    \PYG{k}{while}\PYG{p}{(} \PYG{n}{r\PYGZus{}y}\PYG{p}{(}\PYG{p}{)} \PYG{o}{\PYGZlt{}} \PYG{n}{NUM} \PYG{p}{)} \PYG{p}{\PYGZob{}}
+        \PYG{esc}{\colorbox{green}{int t1, t2;}}
+        \PYG{n}{t1} \PYG{o}{=} \PYG{n}{r\PYGZus{}y}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+        \PYG{n}{w\PYGZus{}y}\PYG{p}{(} \PYG{n}{t1} \PYG{o}{+} \PYG{l+m+mi}{1} \PYG{p}{)}\PYG{p}{;}
+        \PYG{n}{t1} \PYG{o}{=} \PYG{n}{r\PYGZus{}x}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+        \PYG{n}{t2} \PYG{o}{=} \PYG{n}{r\PYGZus{}y}\PYG{p}{(}\PYG{p}{)}\PYG{p}{;}
+        \PYG{n}{w\PYGZus{}x}\PYG{p}{(} \PYG{n}{t1} \PYG{o}{+} \PYG{n}{t2} \PYG{p}{)}\PYG{p}{;}
+    \PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{Verbatim}

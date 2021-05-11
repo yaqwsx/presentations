@@ -1,0 +1,44 @@
+\frametitle{Conclusion}
+\protect\hypertarget{conclusion}{}
+
+\begin{itemize}
+\tightlist
+\item
+  RRT-Connect can be perceived as \say{randomized A*}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    it helps to move to another location before examining the whole
+    local minima
+  \end{itemize}
+\item
+  A* finds optimal solution, RRT-Connect finds long paths
+
+  \begin{itemize}
+  \tightlist
+  \item
+    RRT paths can be post-processed
+  \end{itemize}
+\end{itemize}
+
+\pause
+
+\textbf{What might be interesting for RoFI:}
+
+\begin{itemize}
+\tightlist
+\item
+  ignore module ids by performing matching
+\item
+  came up with similar similarity metrics
+
+  \begin{itemize}
+  \tightlist
+  \item
+    experimentally fine-tune parameters
+  \end{itemize}
+\item
+  implement RRT-Connect and benchmark it
+\end{itemize}
+
