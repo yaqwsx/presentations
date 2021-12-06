@@ -1,0 +1,292 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>Physical implementation of RoFI modules</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/rofi.css">
+
+	<script type="text/x-mathjax-config">
+		MathJax = {
+		  loader: {load: ['[tex]/mathtools']},
+		  tex: {
+			inlineMath: [['$', '$'], ["\\(", "\\)"]],
+			processEscapes: true,
+			packages: {'[+]': ['mathtools']}
+		  }
+		}
+	  </script>
+	<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+	<script type="text/javascript" id="MathJax-script" async
+	src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+	</script>
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<div class="title">
+					<h1>Physical implementation of RoFI modules</h1>
+					<h2>Jan Mrázek</h2>
+				</div>
+			</section>
+
+			<section>
+				<h1>What is universal module</h1>
+				<div class="container">
+					<div class="container">
+						<img src="assets/rofi.png" style="width: 100%;"/>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>What do we want to do with it?</h1>
+				<div class="container">
+					<div class="row">
+						<p><b>Control the modules via programs that:</b></p>
+						<ul>
+							<li>run directly on the module</li>
+							<li>cannot damage the module nor get in into undefined state</li>
+						</ul>
+					</div>
+					<br><br>
+					<div class="row">
+						<div class="col-6">
+							<p><b>The user should directly control:</b></p>
+							<ul>
+								<li>joints,</li>
+								<li>communication,</li>
+								<li>power sharing scheme,</li>
+								<li>read high-level sensor data.</li>
+							</ul>
+						</div>
+						<div class="col-6">
+							<p><b>What should be opaque to the user:</b></p>
+							<ul>
+								<li>program management,</li>
+								<li>power management,</li>
+								<li>networking,</li>
+								<li>actual hardware drivers</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Basic building block: RoFICoM</h1>
+				<div class="container">
+					<div class="col-5">
+						<img style="width: 100%; max-height: 100%;" src="https://rofi.fi.muni.cz/assets/img/connector/connector_photo.jpg"/>
+					</div>
+					<div class="col-7">
+						<img style="width: 100%; max-height: 100%;" src="assets/roficom_sch.svg"/>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Building RoFI</h1>
+				<div class="container">
+					<div class="col-7">
+						<img style="width: 100%; max-height: 100%;" src="https://rofi.fi.muni.cz/assets/files/platform/grid-system/dock_positions.svg"/>
+					</div>
+					<div class="col-5">
+						<br><br><br>
+						<img style="width: 100%; max-height: 100%;" src="https://rofi.fi.muni.cz/assets/files/platform/grid-system/rofi_shapes.svg"/>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Architecture of the module</h1>
+				<div class="container">
+					<div class="col-8">
+						<img style="height: 800px;" src="assets/rofi_sch.svg"/>
+					</div>
+					<div class="col-4">
+						<ul>
+							<li>Why coprocesor?<ul>
+								<li>power management</li>
+								<li>convinient programming</li>
+								<li>user program management</li>
+							</ul></li>
+							<li>How does energy flow?<ul>
+								<li>standalone</li>
+								<li>source</li>
+								<li>sink</li>
+								<li>wire</li>
+							</ul></li>
+							<li>How does user program run?</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Software achitecture</h1>
+				<div class="container">
+					<img style="height: 800px;" src="assets/sw_arch.png"/>
+				</div>
+			</section>
+
+			<section>
+				<h1>Power management and sharing</h1>
+				<div class="container">
+					<div class="col-8">
+						<img style="height: 800px;" src="assets/rofi_sch.svg"/>
+					</div>
+					<div class="col-4">
+						<b>Battery operation:</b>
+						<ul>
+							<li>Ensure safe operation</li>
+							<li>Charge it via USB</li>
+							<li>Charge it from other module</li>
+						</ul>
+						<b>Power sharing:</b>
+						<ul>
+							<li>Why high voltage?</li>
+							<li>Give power</li>
+							<li>Receive power</li>
+							<li>Transmit power</li>
+						</ul>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>HAL vs. hardware vs. user programs</h1>
+				<div class="container">
+					<div class="col-6">
+						<img style="height: 700px;" src="assets/rofi_sch.svg"/>
+					</div>
+					<div class="col-6">
+						<img style="height: 700px;" src="assets/sw_arch.png"/>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Mechanical construction</h1>
+				<div class="container">
+					<img style="height: 700px;" src="assets/mech.png"/>
+					<ul>
+						<li>Too complex (35+ parts)</li>
+						<li>Current work: new, simple version</li>
+					</ul>
+				</div>
+			</section>
+
+			<section>
+				<h1>Really? Typescript for RoFI?</h1>
+				<div class="container">
+					<ul>
+						<li>C++ often hurts. People don't know it.</li>
+						<li>Need to express asynchronous event<ul>
+							<li>callback hell,</li>
+							<li>RBL is nice, but complex.</li>
+						</ul></li>
+						<li>Firmware compilation times are unbearable.</li>
+						<li>Difficult deployment of native firmware.</li>
+						<li>Most firmwares are simple!</li>
+					</ul>
+
+					<p>
+						Working prototype: <a href="https://github.com/yaqwsx/Jaculus">https://github.com/yaqwsx/Jaculus</a>
+					</p>
+					<ul>
+						<li>Build on top of Duktape interpreter.</li>
+						<li>Possibility to embed native libraries.</li>
+					</ul>
+				</div>
+			</section>
+
+			<section>
+				<h1>Where are we... where will be?</h1>
+				<div class="container">
+					<ul>
+						<li>We make slow, but hopefully, steady progress!</li>
+						<li>Hardware is the current blocker.</li>
+						<li>If you want to join me on our hardware journey, you are welcome!</li>
+					</ul>
+				</div>
+			</section>
+
+
+
+			<!-- <section>
+				<h1>Conclusion</h1>
+				<div class="container">
+					<p>
+						<ul>
+							<li>Model-checking-inspired approach to finding reconfiguration</li>
+							<li>A novel reduction of the problem to SMT that yields collision-free plans</li>
+							<li>Several optimization of the procedure.</li>
+							<li>State-of-the-art solvers perform bad,</li>
+							<li>but we observe improvements with newer tools.</li>
+						</ul>
+					</p>
+
+					<p>
+						<b>Possible future improvements:</b>
+						<ul>
+							<li>Move from real arithmetics to integral one, and</li>
+							<li>remove trigonometric function machinery.</li>
+							<li>Reach out to the STM solvers developers and offer them new benchmarks.</li>
+						</ul>
+					</p>
+
+					<div class="fragment center" style="margin-top: 10px;">
+						Thank you!</br>
+						<a href="https://rofibots.com">https://rofibots.com</a>
+					</div>
+				</div>
+			</section> -->
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			width: 1920,
+			height: 1080,
+			margin: 0,
+			center: false,
+			progress: true,
+			history: true,
+			controls: false,
+			transition: "none",
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>
