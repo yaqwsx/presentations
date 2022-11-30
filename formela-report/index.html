@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>RoFI &ndash; Distributed Metamorphic Robots</title>
+
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/rofi.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/zenburn.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<div class="title">
+					<h1 style="font-size: 78px;">RoFI – Robots at Paraside</h1>
+					<h2>Jan Mrázek</h2>
+					<h3>December 5, 2022</h3>
+				</div>
+			</section>
+
+			<section>
+				<h1>Modern vs. Post-modern Robotics</h1>
+				<div class="container">
+					<div class="row" style="text-align: center;">
+						More universal, less effort, more emergent behavior
+						<div class="arrow" style=" width:1500px; margin:0px auto;">
+							<div class="line"
+								style="margin-top:14px; width:1470px;background: gray; height:10px; float:left;"></div>
+							<div class="point"
+								style="width: 0; height: 0; border-top: 20px solid transparent; border-bottom: 20px solid transparent; border-left: 30px solid gray; float:right;">
+							</div>
+						</div>
+					</div>
+					<div class="row" style="text-align: center;">
+						<div class="col-6">current robotics</div>
+						<div class="col-6">post-modern robotics</div>
+					</div>
+					<div class="col-3 fragment">
+						<p style="text-align: center; height: 90px;">
+							<b>Hand-crafted robots</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							&nbsp;
+						</p>
+						<img
+							src="https://cdn.vox-cdn.com/thumbor/ArKnzhs30VwUNpgNJOpAugEi2JI=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/19770075/pia23491.jpg">
+					</div>
+					<div class="col-3 fragment">
+						<p style="text-align: center; height: 90px;">
+							<b>Modular robots</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							organs
+						</p>
+						<img
+							src="http://www.shgongboshi.com/photo/ps24578598-handling_kuka_robot_arm_kr_210_r2700_extra_floor_mount_position_waterproof.jpg">
+					</div>
+					<div class="col-3 fragment">
+						<p style="text-align: center; height: 90px;">
+							<b>Metamorphic robots</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							cells
+						</p>
+						<img style="" src="assets/metamorphic.jpg">
+					</div>
+					<div class="col-3 fragment">
+						<p style="text-align: center; height: 90px;">
+							<b>Smart matter</b>
+						</p>
+						<p style="text-align: center; color: gray;">
+							atoms
+						</p>
+						<img style="" src="assets/smartMatter.jpg">
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>What Is The Goal?</h1>
+				<div class="container">
+					<img style="height: 700px;" src="https://www.gateworld.net/wiki/images/b/bd/Replicators.jpg">
+					<p style="text-align: center;">...basically replicators from Star Gate: SG-1</p>
+				</div>
+			</section>
+
+			<section>
+				<h1 class="fragment hide" data-fragment-index="1">Challenges of Metamorphic Robots</h1>
+				<h1 class="fragment show" data-fragment-index="1">What We Focus On</h1>
+				<div class="container">
+					<div class="col-9">
+						<p>
+							<b>Hardware challenges</b>
+							<ul>
+								<li>module design &amp; miniaturization</li>
+								<li>power source</li>
+								<li>bringing cost down &amp; mass-production</li>
+							</ul>
+							</li>
+						</p>
+						<p>
+							<b>Challenges of the distributed nature</b>
+							<ul>
+								<li class="fragment highlight-red" data-fragment-index="1">massive communication in unstable topology</li>
+								<li class="fragment highlight-red" data-fragment-index="1">computationally weak modules</li>
+								<li class="fragment highlight-red" data-fragment-index="1">task distribution &amp; cooperation on task solving</li>
+							</ul>
+						</p>
+						<p>
+							<b>Algorithmic challenges</b>
+							<ul>
+								<li class="fragment highlight-red" data-fragment-index="1">self-assembly &amp; reconfiguration</li>
+								<li>task specification &amp task formalization ("Bring me a coffee")</li>
+							</ul>
+						</p>
+					</div>
+					<div class="col-3 fragment show" data-fragment-index="1">
+						<p style="font-size: 60px; text-align: center; margin-top: 200px;">"Be ready when the hardware guys finish their job."
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h1>Finding Self-assembly Plans</h1>
+				<div class="container">
+					<p>Several approaches:</p>
+					<ul>
+						<li>state-space search<ul>
+							<li>leveraging symmetries</li>
+							<li>voxel-based reconfiguration (efficient implementation, brute-force)</li>
+						</ul></li>
+						<li>inverse-kinematics base</li>
+						<li>reduction to SMT</li>
+					</ul>
+
+					<p style="color: gray; margin-top: 250px;">Relation to verification: inspiration by model-checking techniques</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>Distributed Control</h1>
+				<div class="container">
+					<p>Several topics:</p>
+					<ul>
+						<li>efficient communication<ul>
+							<li>routing algorithms &amp; application-based addressing schemes</li>
+							<li>fault-tolerance</li>
+						</ul></li>
+						<li>distributed firmware update</li>
+						<li style="color: gray;">distributed computations on resource-limited nodes</li>
+						<li style="color: gray;">fault-tolerance via distribution</li>
+						<li style="color: gray;">evolving trust in individual agents</li>
+					</ul>
+
+					<p style="color: gray; margin-top: 120px;">Relation to verification: need to validate protocol properties</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>RoFI Platform</h1>
+				<div class="container">
+					<div class="row center">
+						<div>
+							<img src="assets/um_on_passive.jpg" style="height: 500px; display: inline-block"/>
+							<img src="assets/um_hanging.jpg" style="height: 500px; display: inline-block;"/>
+						</div>
+					</div>
+					<p>
+						<ul>
+							<li>develop a robotic platform for result validation &amp; reproduction</li>
+							<li>make it open & well-supported so the community can benefit from it</li>
+						</ul>
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h1>RoFI at Paradise: Summary</h1>
+				<div class="container">
+					<div class="col-7">
+						<ul style="margin-top: 60px">
+							<li>metamorphic self-reconfigurable robots</li>
+							<li>self-reconfiguration algorithms</li>
+							<li>distributed control</li>
+							<li>supported by custom robotic kit</li>
+						</ul>
+
+						<div class="fragment center" style="margin-top: 200px;">
+							Thank you!</br>
+							<a href="https://ro.fi.muni.cz">https://ro.fi.muni.cz</a>
+						</div>
+					</div>
+					<div class="col-5">
+						<img src="assets/um_persp.jpg">
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			width: 1920,
+			height: 1080,
+			margin: 0,
+			center: false,
+			progress: true,
+			history: true,
+			controls: false,
+			transition: "none",
+			dependencies: [
+				{ src: 'plugin/markdown/marked.js' },
+				{ src: 'plugin/markdown/markdown.js' },
+				{ src: 'plugin/notes/notes.js', async: true },
+				{ src: 'plugin/highlight/highlight.js', async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>
